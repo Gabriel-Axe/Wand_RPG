@@ -24,16 +24,16 @@ func main() {
 				os.Exit(0) 
 			} else if is_pressing_key("l", player_input) { 
 				list_opposit_player_team(player, g)
-			// } else if is_pressing_key("a")
+			} else if is_pressing_key("a", player_input) {
+				attack_opposite_player_team(player, g)
+			}
 		}
 		g.turn += 1
 		fmt.Println("Current turn:", g.turn)
 	}
-	return
-}
 }
 
-func list_opposit_player_team(current_player player, g game) {
+func get_opposite_player(current_player player, g game) player {
 	var p2 player
 	if current_player.id == 1 {
 		p2 = g.players[1]
@@ -41,8 +41,29 @@ func list_opposit_player_team(current_player player, g game) {
 		p2 = g.players[0]
 	}
 
+	return p2
+}
+
+func list_opposit_player_team(current_player player, g game) {
+	p2 := get_opposite_player(current_player, g)
 	// for _, unit in range p2.unicurrent_player.units
+	fmt.Println("# ------------------- #")
 	get_player_team(p2)		
+	fmt.Println("# ------------------- #")
+}
+
+func attack_opposite_player_team(current_player player, g game) {
+	fmt.Println("Select a unit to attack: ")
+	fmt.Println("1: ")
+	list_opposit_player_team(current_player, g)
+	other_player := get_opposite_player(current_player, g)
+
+	cur_ply_unit := current_player.main_unit
+	// for _, unit in range 
+	other_player.main_unit.health -= cur_ply_unit.damage
+	if other_player.main_unit.health >= 0 {
+		os.Exit(0)
+	}
 }
 
 func list_unit_stats(u unit) {
@@ -59,7 +80,8 @@ func is_pressing_key(expected string, player_input string) bool {
 func action_menu_show() {
 	fmt.Println("Ação: ")
 	fmt.Println("Sair: q")
-	fmt.Println("Dar oi: i")
+	fmt.Println("Listar time inimigo: l")
+	fmt.Println("Atacar o time inimigo: a")
 }
 
 func get_player_team(p player) {
@@ -68,8 +90,8 @@ func get_player_team(p player) {
 }
 
 func setup_game() game {
-	u1 := unit{name: "Goblin", health: 100, damage: 10}
-	u2 := unit{name: "Skeleton", health: 100, damage: 10}
+	u1 := unit{id: 1, name: "Goblin", health: 100, damage: 10}
+	u2 := unit{id: 1, name: "Skeleton", health: 100, damage: 10}
 
 	p1 := player{id: 1, name: "Alexander", main_unit: u1}
 	p2 := player{id: 2, name: "Oliver", main_unit: u2}
@@ -92,6 +114,7 @@ func Pong(w http.ResponseWriter, req *http.Request) {
 }
 
 type unit struct {
+	id int
 	name string
 	health int
 	damage int
