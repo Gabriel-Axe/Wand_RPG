@@ -19,15 +19,19 @@ func main() {
 			get_player_team(player)
 			action_menu_show()
 			fmt.Scan(&player_input)
-			if player_input == "q" {
-				os.Exit(0)			
-			} else if player_input == "l" {
-				fmt.Println("oi")
+			if is_pressing_key("q", player_input) { os.Exit(0) 
+			} else if is_pressing_key("l", player_input) { 
+				fmt.Println("oi") 
 			}
 		}
 
 		return
 	}
+}
+
+func is_pressing_key(expected string, player_input string) bool {
+	if player_input == expected { return true }
+	return  false
 }
 
 func action_menu_show() {
