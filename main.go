@@ -5,27 +5,35 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 )
 
 var addr = flag.String("addr", ":1718", "http service address") // Q=17, R=18
 
 func main() {
 	g := setup_game()
+	var player_input string
 
 	for {
 		for _, player := range g.players {
 			get_player_team(player)
-
-			fmt.Println("Ação: ")
-			fmt.Println("Sair: q")
-			fmt.Println("Dar oi: i")
-
+			action_menu_show()
+			fmt.Scan(&player_input)
+			if player_input == "q" {
+				os.Exit(0)			
+			} else if player_input == "l" {
+				fmt.Println("oi")
+			}
 		}
-		var input string
-		fmt.Scan(&input)
-		fmt.Println("Você digitou:", input)
+
 		return
 	}
+}
+
+func action_menu_show() {
+	fmt.Println("Ação: ")
+	fmt.Println("Sair: q")
+	fmt.Println("Dar oi: i")
 }
 
 func get_player_team(p player) {
