@@ -1,15 +1,18 @@
 package main
 
 import (
-	"log"
 	"flag"
+	"fmt"
+	"log"
 	"net/http"
 )
 
 var addr = flag.String("addr", ":1718", "http service address") // Q=17, R=18
 
 func main() {
-	// handle_http()
+	for {
+		fmt.Println("hi")
+	}
 }
 
 func handle_http() {
