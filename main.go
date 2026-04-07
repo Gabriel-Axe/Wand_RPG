@@ -14,13 +14,25 @@ func main() {
 
 	for {
 		for _, player := range g.players {
-			fmt.Println("Time do jogador", player.id, ":")
-			fmt.Println("\tname:",  player.main_unit.name)
-			fmt.Println("\thealth:", player.main_unit.health)
-			fmt.Println("\tdamage:", player.main_unit.damage)
+			get_player_team(player)
+
+			fmt.Println("Ação: ")
+			fmt.Println("Sair: q")
+			fmt.Println("Dar oi: i")
+
 		}
+		var input string
+		fmt.Scan(&input)
+		fmt.Println("Você digitou:", input)
 		return
 	}
+}
+
+func get_player_team(p player) {
+	fmt.Println("Time do jogador", p.id, ":")
+	fmt.Println("\tname:",  p.main_unit.name)
+	fmt.Println("\thealth:", p.main_unit.health)
+	fmt.Println("\tdamage:", p.main_unit.damage)
 }
 
 func setup_game() game {
