@@ -18,15 +18,37 @@ func main() {
 		for _, player := range g.players {
 			get_player_team(player)
 			action_menu_show()
-			fmt.Scan(&player_input)
-			if is_pressing_key("q", player_input) { os.Exit(0) 
-			} else if is_pressing_key("l", player_input) { 
-				fmt.Println("oi") 
-			}
-		}
 
-		return
+			fmt.Scan(&player_input)
+			if is_pressing_key("q", player_input) {
+				os.Exit(0) 
+			} else if is_pressing_key("l", player_input) { 
+				list_opposit_player_team(player, g)
+			// } else if is_pressing_key("a")
+		}
+		g.turn += 1
+		fmt.Println("Current turn:", g.turn)
 	}
+	return
+}
+}
+
+func list_opposit_player_team(current_player player, g game) {
+	var p2 player
+	if current_player.id == 1 {
+		p2 = g.players[1]
+	} else {
+		p2 = g.players[0]
+	}
+
+	// for _, unit in range p2.unicurrent_player.units
+	get_player_team(p2)		
+}
+
+func list_unit_stats(u unit) {
+	fmt.Println("\tname:",  u.name)
+	fmt.Println("\thealth:", u.health)
+	fmt.Println("\tdamage:", u.damage)
 }
 
 func is_pressing_key(expected string, player_input string) bool {
@@ -42,9 +64,7 @@ func action_menu_show() {
 
 func get_player_team(p player) {
 	fmt.Println("Time do jogador", p.id, ":")
-	fmt.Println("\tname:",  p.main_unit.name)
-	fmt.Println("\thealth:", p.main_unit.health)
-	fmt.Println("\tdamage:", p.main_unit.damage)
+	list_unit_stats(p.main_unit)
 }
 
 func setup_game() game {
@@ -54,7 +74,7 @@ func setup_game() game {
 	p1 := player{id: 1, name: "Alexander", main_unit: u1}
 	p2 := player{id: 2, name: "Oliver", main_unit: u2}
 
-	g := game{players: []player{p1, p2}, turn: 0}
+	g := game{players: []player{p1, p2}, turn: 1}
 
 	return g
 }
