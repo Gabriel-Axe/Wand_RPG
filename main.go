@@ -10,9 +10,19 @@ import (
 var addr = flag.String("addr", ":1718", "http service address") // Q=17, R=18
 
 func main() {
-	for {
-		fmt.Println("hi")
-	}
+	g := setup_game()
+
+	fmt.Println(g.turn)
+	fmt.Println(g.players[0].name)
+	fmt.Println(g.players[0].main_unit.name)
+}
+
+func setup_game() game {
+	u := unit{name: "Goblin", health: 100, damage: 10}
+	p := player{name: "Alexander", main_unit: u}
+	g := game{players: []player{p}, turn: 0}
+
+	return g
 }
 
 func handle_http() {
