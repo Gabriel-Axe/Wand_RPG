@@ -11,8 +11,8 @@ import (
 var addr = flag.String("addr", ":1718", "http service address") // Q=17, R=18
 
 func main() {
-	g := setup_game()
 	var player_input string
+	g := setup_game(&player_input)
 
 	for {
 		for _, player := range g.players {
@@ -106,16 +106,49 @@ func get_player_team(p *player) {
 	list_unit_stats(*p.main_unit)
 }
 
-func setup_game() *game {
-	u1 := &unit{id: 1, name: "Goblin", health: 100, damage: 10}
-	u2 := &unit{id: 1, name: "Skeleton", health: 100, damage: 10}
+func setup_game(player_input *string) *game {
+	p1 := &player{id: 1, name: "Alexander"}
+	p2 := &player{id: 2, name: "Oliver"}
 
-	p1 := &player{id: 1, name: "Alexander", main_unit: u1}
-	p2 := &player{id: 2, name: "Oliver", main_unit: u2}
+	choose_team(p1, player_input)
+	choose_team(p2, player_input)
 
 	g := &game{players: []*player{p1, p2}, turn: 1}
 
 	return g
+}
+
+func choose_team(player *player, player_input *string) {
+	fmt.Println("Select your team %s: \n", player.name)
+
+	fmt.Println("Goblin: 1")
+	fmt.Println("Elven: 2")
+	fmt.Println("Werewolf: 3")
+
+	teamMaxSize := 3
+	team := []*unit{}
+	teamSize := len(team)
+
+	for teamSize != teamMaxSize {
+		fmt.Scan(&player_input)
+		switch *player_input {
+		case "1":
+			team[teamSize] = make_goblin()
+			break
+		case "2":
+			team[teamSize] = make_elven()
+			break
+		case "3":
+			team[teamSize] = make_werewolf()
+			break
+		default:
+			fmt.Println("Unknow input: %s", player_input)
+		}
+
+		teamSize = len(team)
+	}
+
+	player.team = team
 }
 
 func handle_http() {
@@ -130,8 +163,19 @@ func Pong(w http.ResponseWriter, req *http.Request) {
 	w.Write([]byte("pong"))
 }
 
+func make_goblin() *unit {
+	return &unit{name: "Goblin", health: 70, damage: 10}
+}
+
+func make_werewolf() *unit {
+	return &unit{name: "Werewolf", health: 130, damage: 30}
+}
+
+func make_elven() *unit {
+	return &unit{name: "Elven", health: 100, damage: 20}
+}
+
 type unit struct {
-	id int
 	name string
 	health int
 	damage int
@@ -140,7 +184,7 @@ type unit struct {
 type player struct {
 	id int
 	name string
-	main_unit *unit
+	team []*unit
 }
 
 type game struct {
