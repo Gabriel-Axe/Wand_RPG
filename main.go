@@ -6,13 +6,15 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 )
 
 var addr = flag.String("addr", ":1718", "http service address") // Q=17, R=18
 
 func main() {
+
+	g := setup_game()
 	var player_input string
-	g := setup_game(&player_input)
 
 	for {
 		for _, player := range g.players {
@@ -68,17 +70,64 @@ func list_player_team(current_player *player, g *game) {
 }
 
 func attack_opposite_player_team(current_player *player, g *game) {
-	fmt.Println("Select a unit to attack: ")
-	fmt.Println("1: ")
-	list_opposit_player_team(current_player, g)
-	other_player := get_opposite_player(*current_player, *g)
+	var player_input string
 
-	cur_ply_unit := current_player.main_unit
-	// for _, unit in range 
-	other_player.main_unit.health -= cur_ply_unit.damage
-	if other_player.main_unit.health <= 0 {
-		fmt.Printf("Jogardor %s venceu, parabens!", current_player.name)
-		os.Exit(0)
+	other_player := get_opposite_player(*current_player, *g)
+	other_team := other_player.team
+
+	var other_unit *unit
+	var player_unit *unit
+
+	fmt.Println("Select a unit to attack: ")
+	for _, unit := range(other_team) {
+		fmt.Printf("%s: %d\n", unit.name, unit.health)
+	}
+
+	// chose := 0
+	// var choices [3]int
+
+	for {
+		fmt.Scan(&player_input)
+		input, err := strconv.Atoi(player_input)
+		if err != nil {
+			panic(err)
+		}
+
+		if input < len(other_team) || input < 0 {
+			fmt.Printf("Please choose a humber between 1 and %d\n", len(other_team))
+			continue
+		}
+
+		other_unit = other_player.team[input]
+		break
+	}
+
+	fmt.Println("Select your attacker: ")
+	for _, unit := range(current_player.team) {
+		fmt.Printf("%s: %d\n", unit.name, unit.health)
+	}
+
+	for {
+		fmt.Scan(&player_input)
+		input, err := strconv.Atoi(player_input)
+		if err != nil {
+			panic(err)
+		}
+
+		if input < len(current_player.team) || input < 0 {
+			fmt.Printf("Please choose a humber between 1 and %d\n", len(current_player.team))
+			continue
+		}
+
+		player_unit = current_player.team[input]
+		break
+	}
+
+	// other_player.main_unit.health -= cur_ply_unit.damage
+	other_unit.health -= player_unit.damage
+	if other_unit.health <= 0 {
+		fmt.Printf("A unidade %s de %s morreu!", other_unit.name, other_player.name)
+		other_player.team[other_unit.id] = nil
 	}
 }
 
@@ -103,22 +152,26 @@ func action_menu_show() {
 
 func get_player_team(p *player) {
 	fmt.Println("Time do jogador", p.id, ":")
-	list_unit_stats(*p.main_unit)
+	for _, unit := range (p.team) {
+		list_unit_stats(*unit)
+	}
 }
 
-func setup_game(player_input *string) *game {
+func setup_game() *game {
 	p1 := &player{id: 1, name: "Alexander"}
 	p2 := &player{id: 2, name: "Oliver"}
 
-	choose_team(p1, player_input)
-	choose_team(p2, player_input)
+	choose_team(p1)
+	choose_team(p2)
 
 	g := &game{players: []*player{p1, p2}, turn: 1}
 
 	return g
 }
 
-func choose_team(player *player, player_input *string) {
+func choose_team(player *player) {
+
+	var player_input string
 	fmt.Println("Select your team %s: \n", player.name)
 
 	fmt.Println("Goblin: 1")
@@ -126,12 +179,12 @@ func choose_team(player *player, player_input *string) {
 	fmt.Println("Werewolf: 3")
 
 	teamMaxSize := 3
-	team := []*unit{}
+	var team [3] *unit
 	teamSize := len(team)
 
 	for teamSize != teamMaxSize {
 		fmt.Scan(&player_input)
-		switch *player_input {
+		switch player_input {
 		case "1":
 			team[teamSize] = make_goblin()
 			break
@@ -176,6 +229,7 @@ func make_elven() *unit {
 }
 
 type unit struct {
+	id int
 	name string
 	health int
 	damage int
@@ -184,7 +238,7 @@ type unit struct {
 type player struct {
 	id int
 	name string
-	team []*unit
+	team [3]*unit
 }
 
 type game struct {
