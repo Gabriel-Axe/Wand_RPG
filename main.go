@@ -1,11 +1,15 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"strings"
+
+	// "os"
 	"strconv"
 )
 
@@ -14,33 +18,38 @@ var addr = flag.String("addr", ":1718", "http service address") // Q=17, R=18
 func main() {
 
 	g := setup_game()
-	var player_input string
+	game_loop(g)
+	// get_input()
+}
 
-	for {
-		for _, player := range g.players {
-			for {
-				action_menu_show()
-
-				fmt.Scan(&player_input)
-				if is_pressing_key("q", player_input) {
-					os.Exit(0) 
-				} else if is_pressing_key("l", player_input) { 
-					list_opposit_player_team(player, g)
-				} else if is_pressing_key("m", player_input) { 
-					list_player_team(player, g)
-				} else if is_pressing_key("a", player_input) {
-					attack_opposite_player_team(player, g)
-					break
-				} else {
-					fmt.Printf("Unknow key: %s", player_input)
-				}
-
-				continue
-			}
-		}
-		g.turn += 1
-		fmt.Println("Current turn:", g.turn)
-	}
+func game_loop(g game) {
+	// var player_input string
+	//
+	// for {
+	// 	for _, player := range g.players {
+	// 		for {
+	// 			action_menu_show()
+	//
+	// 			fmt.Scan(&player_input)
+	// 			if is_pressing_key("q", player_input) {
+	// 				os.Exit(0) 
+	// 			} else if is_pressing_key("l", player_input) { 
+	// 				list_opposit_player_team(player, g)
+	// 			} else if is_pressing_key("m", player_input) { 
+	// 				list_player_team(player, g)
+	// 			} else if is_pressing_key("a", player_input) {
+	// 				attack_opposite_player_team(player, g)
+	// 				break
+	// 			} else {
+	// 				fmt.Printf("Unknow key: %s", player_input)
+	// 			}
+	//
+	// 			continue
+	// 		}
+	// 	}
+	// 	g.turn += 1
+	// 	fmt.Println("Current turn:", g.turn)
+	// }
 }
 
 func get_opposite_player(current_player player, g game) *player {
@@ -63,7 +72,6 @@ func list_opposit_player_team(current_player *player, g *game) {
 }
 
 func list_player_team(current_player *player, g *game) {
-	// for _, unit in range p2.unicurrent_player.units
 	fmt.Println("# ------------------- #")
 	get_player_team(current_player)		
 	fmt.Println("# ------------------- #")
@@ -157,48 +165,56 @@ func get_player_team(p *player) {
 	}
 }
 
-func setup_game() *game {
+func setup_game() game {
 	p1 := &player{id: 1, name: "Alexander"}
 	p2 := &player{id: 2, name: "Oliver"}
 
 	choose_team(p1)
 	choose_team(p2)
 
-	g := &game{players: []*player{p1, p2}, turn: 1}
+	g := game{players: []*player{p1, p2}, turn: 1}
 
 	return g
 }
 
+func get_input() string {
+	reader := bufio.NewReader(os.Stdin)
+	input, _ := reader.ReadString('\n')
+	return strings.TrimSpace(input)
+}
+
 func choose_team(player *player) {
 
-	var player_input string
-	fmt.Println("Select your team %s: \n", player.name)
+	teamMaxSize := 3
+	team := make([]*unit, 0, teamMaxSize)
+
+	fmt.Printf("Select your team %s: \n", player.name)
 
 	fmt.Println("Goblin: 1")
 	fmt.Println("Elven: 2")
 	fmt.Println("Werewolf: 3")
 
-	teamMaxSize := 3
-	var team [3] *unit
-	teamSize := len(team)
+	for len(team) < teamMaxSize {
+		fmt.Printf("Choose unit %d/%d: ", len(team)+1, teamMaxSize)
+		choice := get_input()
 
-	for teamSize != teamMaxSize {
-		fmt.Scan(&player_input)
-		switch player_input {
+		var newUnit *unit
+		switch choice {
 		case "1":
-			team[teamSize] = make_goblin()
+			newUnit = make_goblin()
 			break
 		case "2":
-			team[teamSize] = make_elven()
+			newUnit = make_elven()
 			break
 		case "3":
-			team[teamSize] = make_werewolf()
+			newUnit = make_werewolf()
 			break
 		default:
-			fmt.Println("Unknow input: %s", player_input)
+			fmt.Println("Unknow input: %s", choice)
+			continue
 		}
-
-		teamSize = len(team)
+		team = append(team, newUnit)
+		fmt.Printf("Added! Team now has %d/%d units\n", len(team), teamMaxSize)
 	}
 
 	player.team = team
@@ -238,7 +254,7 @@ type unit struct {
 type player struct {
 	id int
 	name string
-	team [3]*unit
+	team []*unit
 }
 
 type game struct {
