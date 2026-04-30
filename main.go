@@ -23,36 +23,40 @@ func main() {
 }
 
 func game_loop(g game) {
-	// var player_input string
-	//
-	// for {
-	// 	for _, player := range g.players {
-	// 		for {
-	// 			action_menu_show()
-	//
-	// 			fmt.Scan(&player_input)
-	// 			if is_pressing_key("q", player_input) {
-	// 				os.Exit(0) 
-	// 			} else if is_pressing_key("l", player_input) { 
-	// 				list_opposit_player_team(player, g)
-	// 			} else if is_pressing_key("m", player_input) { 
-	// 				list_player_team(player, g)
-	// 			} else if is_pressing_key("a", player_input) {
-	// 				attack_opposite_player_team(player, g)
-	// 				break
-	// 			} else {
-	// 				fmt.Printf("Unknow key: %s", player_input)
-	// 			}
-	//
-	// 			continue
-	// 		}
-	// 	}
-	// 	g.turn += 1
-	// 	fmt.Println("Current turn:", g.turn)
-	// }
+
+	// choose_team(g.players[0])
+	// choose_team(g.players[1])
+
+	var player_input string
+
+	for {
+		for _, player := range g.players {
+			for {
+				action_menu_show()
+
+				fmt.Scan(&player_input)
+				if is_pressing_key("q", player_input) {
+					os.Exit(0) 
+				} else if is_pressing_key("l", player_input) { 
+					list_opposit_player_team(player, g)
+				} else if is_pressing_key("m", player_input) { 
+					list_player_team(player, g)
+				} else if is_pressing_key("a", player_input) {
+					attack_opposite_player_team(player, g)
+					break
+				} else {
+					fmt.Printf("Unknow key: %s", player_input)
+				}
+
+				continue
+			}
+		}
+		g.turn += 1
+		fmt.Println("Current turn:", g.turn)
+	}
 }
 
-func get_opposite_player(current_player player, g game) *player {
+func get_opposite_player(current_player *player, g game) *player {
 	var p2 *player
 	if current_player.id == 1 {
 		p2 = g.players[1]
@@ -63,79 +67,69 @@ func get_opposite_player(current_player player, g game) *player {
 	return p2
 }
 
-func list_opposit_player_team(current_player *player, g *game) {
-	p2 := get_opposite_player(*current_player, *g)
+func list_opposit_player_team(current_player *player, g game) {
+	p2 := get_opposite_player(current_player, g)
 	// for _, unit in range p2.unicurrent_player.units
 	fmt.Println("# ------------------- #")
 	get_player_team(p2)		
 	fmt.Println("# ------------------- #")
 }
 
-func list_player_team(current_player *player, g *game) {
+func list_player_team(current_player *player, g game) {
 	fmt.Println("# ------------------- #")
 	get_player_team(current_player)		
 	fmt.Println("# ------------------- #")
 }
 
-func attack_opposite_player_team(current_player *player, g *game) {
-	var player_input string
+func select_unit_from_team(t []*unit) *unit {
 
-	other_player := get_opposite_player(*current_player, *g)
-	other_team := other_player.team
-
-	var other_unit *unit
-	var player_unit *unit
-
-	fmt.Println("Select a unit to attack: ")
-	for _, unit := range(other_team) {
-		fmt.Printf("%s: %d\n", unit.name, unit.health)
+	for _, unit := range(t) {
+		fmt.Printf("%d. %s: %d\n", unit.id, unit.name, unit.health)
 	}
+	fmt.Println()
 
-	// chose := 0
-	// var choices [3]int
+	var id int
 
 	for {
-		fmt.Scan(&player_input)
-		input, err := strconv.Atoi(player_input)
+		choice := get_input()
+		id, err := strconv.Atoi(choice)
 		if err != nil {
 			panic(err)
 		}
 
-		if input < len(other_team) || input < 0 {
-			fmt.Printf("Please choose a humber between 1 and %d\n", len(other_team))
+		fmt.Printf("Number chosen: %d\n", id)
+
+		if id < len(t) || id < 0 {
+			fmt.Printf("Please choose a humber between 1 and %d\n", len(t))
 			continue
 		}
 
-		other_unit = other_player.team[input]
 		break
 	}
+
+	chosen_unit := t[id]
+	return  chosen_unit
+}
+
+func attack_opposite_player_team(current_player *player, g game) {
+
+	other_player := get_opposite_player(current_player, g)
+
+	player_team := current_player.team
+	other_team := other_player.team
+	var attacker *unit
+	var attacked *unit
 
 	fmt.Println("Select your attacker: ")
-	for _, unit := range(current_player.team) {
-		fmt.Printf("%s: %d\n", unit.name, unit.health)
-	}
+	attacker = select_unit_from_team(player_team)
 
-	for {
-		fmt.Scan(&player_input)
-		input, err := strconv.Atoi(player_input)
-		if err != nil {
-			panic(err)
-		}
+	fmt.Println("Select a unit to attack: ")
+	attacked = select_unit_from_team(other_team)
 
-		if input < len(current_player.team) || input < 0 {
-			fmt.Printf("Please choose a humber between 1 and %d\n", len(current_player.team))
-			continue
-		}
-
-		player_unit = current_player.team[input]
-		break
-	}
-
-	// other_player.main_unit.health -= cur_ply_unit.damage
-	other_unit.health -= player_unit.damage
-	if other_unit.health <= 0 {
-		fmt.Printf("A unidade %s de %s morreu!", other_unit.name, other_player.name)
-		other_player.team[other_unit.id] = nil
+	attacked.health -= attacker.damage
+	if attacked.health <= 0 {
+		fmt.Printf("A unidade %s de %s morreu!", attacked.name, attacked.name)
+		other_player.team[attacked.id] = nil
 	}
 }
 
@@ -166,11 +160,31 @@ func get_player_team(p *player) {
 }
 
 func setup_game() game {
-	p1 := &player{id: 1, name: "Alexander"}
-	p2 := &player{id: 2, name: "Oliver"}
+	// p1 := &player{id: 1, name: "Alexander"}
+	// p2 := &player{id: 2, name: "Oliver"}
 
-	choose_team(p1)
-	choose_team(p2)
+	// WARN: Making the mother of all temporary solutions Jack, cant fret over every egg
+
+	var team_1 [3] *unit
+	team_1[0] = make_goblin()
+	team_1[1] = make_elven()
+	team_1[2] = make_werewolf()
+
+	team_1[0].id = 1
+	team_1[1].id = 2
+	team_1[2].id = 3
+
+	var team_2 [3] *unit
+	team_2[0] = make_goblin()
+	team_2[1] = make_elven()
+	team_2[2] = make_werewolf()
+
+	team_2[0].id = 1
+	team_2[1].id = 2
+	team_2[2].id = 3
+
+	p1 := &player{id: 1, name: "Alexander", team: team_1[:]}
+	p2 := &player{id: 2, name: "Oliver", team: team_2[:]}
 
 	g := game{players: []*player{p1, p2}, turn: 1}
 
