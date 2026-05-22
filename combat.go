@@ -5,27 +5,27 @@ import (
 	"strconv"
 )
 
-func attack_opposite_player_team(current_player *player, g game) {
-
-	other_player := get_opposite_player(current_player, g)
-
-	player_team := current_player.team
-	other_team := other_player.team
-	var attacker *unit
-	var attacked *unit
-
-	fmt.Println("Select your attacker: ")
-	attacker = select_unit_from_team(player_team)
-
-	fmt.Println("Select a unit to attack: ")
-	attacked = select_unit_from_team(other_team)
-
-	attacked.health -= attacker.damage
-	if attacked.health <= 0 {
-		fmt.Printf("A unidade %s de %s morreu!", attacked.name, attacked.name)
-		other_player.team[attacked.id] = nil
-	}
-}
+// func attack_opposite_player_team(current_player *player, g game) {
+//
+// 	other_player := get_opposite_player(current_player, g)
+//
+// 	player_team := current_player.team
+// 	other_team := other_player.team
+// 	var attacker *unit
+// 	var attacked *unit
+//
+// 	fmt.Println("Select your attacker: ")
+// 	attacker = select_unit_from_team(player_team)
+//
+// 	fmt.Println("Select a unit to attack: ")
+// 	attacked = select_unit_from_team(other_team)
+//
+// 	attacked.health -= attacker.damage
+// 	if attacked.health <= 0 {
+// 		fmt.Printf("A unidade %s de %s morreu!", attacked.name, attacked.name)
+// 		other_player.team[attacked.id] = nil
+// 	}
+// }
 
 func choose_team(player *player) {
 
@@ -94,13 +94,13 @@ func select_unit_from_team(t []*unit) *unit {
 	return  chosen_unit
 }
 
-func list_opposit_player_team(current_player *player, g game) {
-	p2 := get_opposite_player(current_player, g)
-	// for _, unit in range p2.unicurrent_player.units
-	fmt.Println("# ------------------- #")
-	get_player_team(p2)		
-	fmt.Println("# ------------------- #")
-}
+// func list_opposit_player_team(current_player *player, g game) {
+// 	p2 := get_opposite_player(current_player, g)
+// 	// for _, unit in range p2.unicurrent_player.units
+// 	fmt.Println("# ------------------- #")
+// 	get_player_team(p2)		
+// 	fmt.Println("# ------------------- #")
+// }
 
 func list_player_team(current_player *player, g game) {
 	fmt.Println("# ------------------- #")
@@ -108,13 +108,13 @@ func list_player_team(current_player *player, g game) {
 	fmt.Println("# ------------------- #")
 }
 
-func get_opposite_player(current_player *player, g game) *player {
-	var p2 *player
-	if current_player.id == 1 {
-		p2 = g.players[1]
-	} else {
-		p2 = g.players[0]
-	}
-
-	return p2
-}
+// func get_opposite_player(current_player *player, g game) *player {
+// 	var p2 *player
+// 	if current_player.id == 1 {
+// 		p2 = g.players[1]
+// 	} else {
+// 		p2 = g.players[0]
+// 	}
+//
+// 	return p2
+// }

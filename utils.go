@@ -56,7 +56,7 @@ func setup_game() *game {
 	p1 := &player{id: 1, name: "Alexander", team: team_1[:]}
 	p2 := &player{id: 2, name: "Oliver", team: team_2[:]}
 
-	g := game{players: []*player{p1, p2}, turn: 1}
+	g := game{attacker: p1, defender: p2, turn: 1}
 
 	return &g
 }
@@ -66,11 +66,13 @@ func gameStatusResponse(g *game) map[string]interface{} {
 		return map[string]interface{}{"error": "No game started"}
 	}
 
-	players := make([]map[string]interface{}, len(g.players))
-	for i, p := range g.players {
-		players[i] = map[string]interface{}{
-			"id": p.id,
-		}
+	// players := make([]map[string]interface{}, len(g.players))
+	players := make([]map[string]interface{}, 2)
+	players[0] = map[string]interface{}{
+		"id": g.attacker.id,
+	}
+	players[1] = map[string]interface{}{
+		"id": g.defender.id,
 	}
 
 	return map[string]interface{}{
@@ -89,39 +91,5 @@ func get_player_team(p *player) {
 	fmt.Println("Time do jogador", p.id, ":")
 	for _, unit := range (p.team) {
 		list_unit_stats(*unit)
-	}
-}
-
-func game_loop(g game) {
-
-	// choose_team(g.players[0])
-	// choose_team(g.players[1])
-
-	var player_input string
-
-	for {
-		for _, player := range g.players {
-			for {
-				action_menu_show()
-
-				fmt.Scan(&player_input)
-				if is_pressing_key("q", player_input) {
-					os.Exit(0) 
-				} else if is_pressing_key("l", player_input) { 
-					list_opposit_player_team(player, g)
-				} else if is_pressing_key("m", player_input) { 
-					list_player_team(player, g)
-				} else if is_pressing_key("a", player_input) {
-					attack_opposite_player_team(player, g)
-					break
-				} else {
-					fmt.Printf("Unknow key: %s", player_input)
-				}
-
-				continue
-			}
-		}
-		g.turn += 1
-		fmt.Println("Current turn:", g.turn)
 	}
 }

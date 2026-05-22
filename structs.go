@@ -14,7 +14,8 @@ type player struct {
 }
 
 type game struct {
-	players []*player // TODO: Make this hold exactly 2
+	attacker *player 
+	defender *player 
 	turn int
 	// NOTE: I still dont know why i need to put these Uppercased
 }
