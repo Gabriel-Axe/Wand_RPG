@@ -10,13 +10,9 @@ var currentGame *game
 
 func handle_get_game_status(w http.ResponseWriter, req *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	if currentGame == nil {
-		w.WriteHeader(http.StatusNotFound)
-		fmt.Fprintf(w, `{"error": "no game started"}`)
-		return
-	}
+	game_status := gameStatusResponse(currentGame)
 
-	json.NewEncoder(w).Encode(currentGame)
+	json.NewEncoder(w).Encode(game_status)
 }
 
 func pong(w http.ResponseWriter, req *http.Request) {
@@ -24,6 +20,19 @@ func pong(w http.ResponseWriter, req *http.Request) {
 }
 
 func handle_game_start(w http.ResponseWriter, req *http.Request) {
+
+	if currentGame != nil {
+		fmt.Fprintf(w, `{"error": "Game already begun"}`)
+		return
+	}
+
 	currentGame = setup_game()
-	fmt.Fprintf(w, "uuuh: %v", currentGame.players)
+	game_status := gameStatusResponse(currentGame)
+	json.NewEncoder(w).Encode(game_status)
+}
+
+func handle_pass_turn(w http.ResponseWriter, req *http.Request) {
+	currentGame.turn++
+	game_status := gameStatusResponse(currentGame)
+	json.NewEncoder(w).Encode(game_status)
 }
