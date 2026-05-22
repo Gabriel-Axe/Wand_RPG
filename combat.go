@@ -64,7 +64,7 @@ func choose_team(player *player) {
 	player.team = team
 }
 
-func see_enemy_stats(p player) []map[string]interface{} {
+func see_defender_stats() []map[string]interface{} {
 	defender_team := currentGame.defender.team
 	stats := make([]map[string]interface{}, len(defender_team))
 
@@ -79,6 +79,28 @@ func see_enemy_stats(p player) []map[string]interface{} {
 	}
 
 	return stats
+}
+
+func see_attacker_stats() []map[string]interface{} {
+	attacker_team := currentGame.attacker.team
+	stats := make([]map[string]interface{}, len(attacker_team))
+
+	for i, u := range attacker_team {
+		stats[i] = map[string]interface{}{
+			"id": u.id,
+			"name": u.name,
+			"damage": u.damage,
+			"health": u.health,
+			"is_defending": u.is_defending,
+		}
+	}
+
+	return stats
+}
+
+func next_turn() {
+	currentGame.turn++
+	currentGame.attacker_turn = !currentGame.attacker_turn
 }
 
 func make_defend(defender player, unit_id int) {

@@ -10,9 +10,9 @@ var currentGame *game
 
 func handle_get_game_status(w http.ResponseWriter, req *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	game_status := gameStatusResponse(currentGame)
+	gs := get_game_status(currentGame)
 
-	json.NewEncoder(w).Encode(game_status)
+	json.NewEncoder(w).Encode(gs)
 }
 
 func pong(w http.ResponseWriter, req *http.Request) {
@@ -27,8 +27,8 @@ func handle_game_start(w http.ResponseWriter, req *http.Request) {
 	}
 
 	currentGame = setup_game()
-	game_status := gameStatusResponse(currentGame)
-	json.NewEncoder(w).Encode(game_status)
+	gs := get_game_status(currentGame)
+	json.NewEncoder(w).Encode(gs)
 }
 
 func handle_attack_request(w http.ResponseWriter, req *http.Request) {
@@ -38,18 +38,25 @@ func handle_attack_request(w http.ResponseWriter, req *http.Request) {
 		make_attack(*currentGame.defender, *currentGame.attacker, 0, 0)
 	}
 
-	game_status := gameStatusResponse(currentGame)
-	json.NewEncoder(w).Encode(game_status)
+	gs := get_game_status(currentGame)
+	json.NewEncoder(w).Encode(gs)
 }
 
 func handle_defender_status_request(w http.ResponseWriter, req *http.Request) {
+	stats := see_defender_stats()
+	json.NewEncoder(w).Encode(stats)
+}
+
+func handle_attacker_status_request(w http.ResponseWriter, req *http.Request) {
+	stats := see_attacker_stats()
+	json.NewEncoder(w).Encode(stats)
 }
 
 func handle_defense_request(w http.ResponseWriter, req *http.Request) {
 }
 
 func handle_pass_turn(w http.ResponseWriter, req *http.Request) {
-	currentGame.turn++
-	game_status := gameStatusResponse(currentGame)
-	json.NewEncoder(w).Encode(game_status)
+	next_turn()
+	gs := get_game_status(currentGame)
+	json.NewEncoder(w).Encode(gs)
 }

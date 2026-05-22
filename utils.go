@@ -61,7 +61,7 @@ func setup_game() *game {
 	return &g
 }
 
-func gameStatusResponse(g *game) map[string]interface{} {
+func get_game_status(g *game) map[string]interface{} {
 	if g == nil {
 		return map[string]interface{}{"error": "No game started"}
 	}
