@@ -5,6 +5,7 @@ type unit struct {
 	name string
 	health int
 	damage int
+	is_defending bool
 }
 
 type player struct {
