@@ -64,8 +64,21 @@ func choose_team(player *player) {
 	player.team = team
 }
 
-func see_enemy_stats(p player) {
-	is_attacker := p.is_attacker
+func see_enemy_stats(p player) []map[string]interface{} {
+	defender_team := currentGame.defender.team
+	stats := make([]map[string]interface{}, len(defender_team))
+
+	for i, u := range defender_team {
+		stats[i] = map[string]interface{}{
+			"id": u.id,
+			"name": u.name,
+			"damage": u.damage,
+			"health": u.health,
+			"is_defending": u.is_defending,
+		}
+	}
+
+	return stats
 }
 
 func make_defend(defender player, unit_id int) {

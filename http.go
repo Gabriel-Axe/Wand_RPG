@@ -42,6 +42,9 @@ func handle_attack_request(w http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(w).Encode(game_status)
 }
 
+func handle_defender_status_request(w http.ResponseWriter, req *http.Request) {
+}
+
 func handle_defense_request(w http.ResponseWriter, req *http.Request) {
 }
 
