@@ -10,12 +10,14 @@ type unit struct {
 type player struct {
 	id int
 	name string
+	is_attacker bool
 	team []*unit
 }
 
 type game struct {
 	attacker *player 
 	defender *player 
+	attacker_turn bool
 	turn int
 	// NOTE: I still dont know why i need to put these Uppercased
 }

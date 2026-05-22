@@ -31,6 +31,17 @@ func handle_game_start(w http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(w).Encode(game_status)
 }
 
+func handle_attack_request(w http.ResponseWriter, req *http.Request) {
+	if currentGame.attacker_turn == true {
+		make_attack(*currentGame.attacker, *currentGame.defender, 0, 0)
+	} else {
+		make_attack(*currentGame.defender, *currentGame.attacker, 0, 0)
+	}
+
+	game_status := gameStatusResponse(currentGame)
+	json.NewEncoder(w).Encode(game_status)
+}
+
 func handle_pass_turn(w http.ResponseWriter, req *http.Request) {
 	currentGame.turn++
 	game_status := gameStatusResponse(currentGame)

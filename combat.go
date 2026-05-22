@@ -64,6 +64,13 @@ func choose_team(player *player) {
 	player.team = team
 }
 
+func make_attack(attacker player, receiver player, attacker_unit_id int, receiver_unit_id int) {
+	a_unit := attacker.team[attacker_unit_id]
+	r_unit := receiver.team[receiver_unit_id]
+
+	r_unit.health -= a_unit.damage
+}
+
 func select_unit_from_team(t []*unit) *unit {
 
 	for _, unit := range(t) {

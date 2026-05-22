@@ -53,8 +53,8 @@ func setup_game() *game {
 	team_2[1].id = 2
 	team_2[2].id = 3
 
-	p1 := &player{id: 1, name: "Alexander", team: team_1[:]}
-	p2 := &player{id: 2, name: "Oliver", team: team_2[:]}
+	p1 := &player{id: 1, name: "Alexander", team: team_1[:], is_attacker: true}
+	p2 := &player{id: 2, name: "Oliver", team: team_2[:], is_attacker: false}
 
 	g := game{attacker: p1, defender: p2, turn: 1}
 
