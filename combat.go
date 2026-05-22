@@ -1,3 +1,10 @@
+package main
+
+import (
+	"fmt"
+	"strconv"
+)
+
 func attack_opposite_player_team(current_player *player, g game) {
 
 	other_player := get_opposite_player(current_player, g)

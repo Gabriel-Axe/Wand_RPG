@@ -1,3 +1,5 @@
+package main
+
 type unit struct {
 	id int
 	name string

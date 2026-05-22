@@ -1,19 +1,11 @@
 package main
 
 import (
-	"bufio"
 	"flag"
 	"fmt"
 	"log"
 	"net/http"
-	"os"
-	"strings"
-
-	// "os"
-	"strconv"
 )
-
-var addr = flag.String("addr", ":1718", "http service address") // Q=17, R=18
 
 func main() {
 
@@ -32,7 +24,7 @@ func pong(w http.ResponseWriter, req *http.Request) {
 }
 
 func handle_http() {
-	http.Handle("/ping", http.HandlerFunc(Pong))
+	http.Handle("/ping", http.HandlerFunc(pong))
 	err := http.ListenAndServe(*addr, nil)
 	if err != nil {
 		log.Fatal("Some error ocurred: ", nil)

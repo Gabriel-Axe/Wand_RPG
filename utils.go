@@ -1,3 +1,12 @@
+package main
+
+import (
+	"fmt"
+	"os"
+	"strings"
+	"bufio"
+)
+
 func list_unit_stats(u unit) {
 	fmt.Println("\tname:",  u.name)
 	fmt.Println("\thealth:", u.health)
