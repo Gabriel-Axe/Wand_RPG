@@ -1,9 +1,12 @@
 package main
 
 import (
+	// "encoding/json"
 	"fmt"
 	"os"
 	"strings"
+
+	// "strconv"
 	"bufio"
 )
 
@@ -26,7 +29,7 @@ func action_menu_show() {
 	fmt.Println("Atacar o time inimigo: a")
 }
 
-func setup_game() game {
+func setup_game() *game {
 	// p1 := &player{id: 1, name: "Alexander"}
 	// p2 := &player{id: 2, name: "Oliver"}
 
@@ -55,7 +58,25 @@ func setup_game() game {
 
 	g := game{players: []*player{p1, p2}, turn: 1}
 
-	return g
+	return &g
+}
+
+func gameStatusResponse(g *game) map[string]interface{} {
+	if g == nil {
+		return map[string]interface{}{"error": "No game started"}
+	}
+
+	players := make([]map[string]interface{}, len(g.players))
+	for i, p := range g.players {
+		players[i] = map[string]interface{}{
+			"id": p.id,
+		}
+	}
+
+	return map[string]interface{}{
+		"players": players,
+		"turn": g.turn,
+	}
 }
 
 func get_input() string {
