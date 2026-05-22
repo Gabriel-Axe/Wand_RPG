@@ -53,6 +53,11 @@ func handle_attacker_status_request(w http.ResponseWriter, req *http.Request) {
 }
 
 func handle_defense_request(w http.ResponseWriter, req *http.Request) {
+	if currentGame.attacker_turn == true {
+		make_defend(*currentGame.defender, 0)
+	} else {
+		make_defend(*currentGame.attacker, 0)
+	}
 }
 
 func handle_pass_turn(w http.ResponseWriter, req *http.Request) {
