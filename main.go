@@ -1,9 +1,7 @@
 package main
 
 import (
-	"flag"
 	"fmt"
-	"log"
 	"net/http"
 )
 
@@ -14,20 +12,9 @@ func main() {
 	// get_input()
 
 	http.HandleFunc("/ping", pong)
+	http.HandleFunc("/game/start", handle_game_start)
+	http.HandleFunc("/game/status", handle_get_game_status)
 
 	fmt.Println("Server running on http://localhost:8080")
 	http.ListenAndServe(":8080", nil)
 }
-
-func pong(w http.ResponseWriter, req *http.Request) {
-	w.Write([]byte("pong"))
-}
-
-func handle_http() {
-	http.Handle("/ping", http.HandlerFunc(pong))
-	err := http.ListenAndServe(*addr, nil)
-	if err != nil {
-		log.Fatal("Some error ocurred: ", nil)
-	}
-}
-
