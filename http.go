@@ -43,11 +43,7 @@ func handle_attack_request(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, `{"error": "Either target or unit id is null"}`)
 	}
 
-	if currentGame.attacker_turn == true {
-		make_attack(*currentGame.attacker, *currentGame.defender, *req.Unit_id, *req.Target_id)
-	} else {
-		make_attack(*currentGame.defender, *currentGame.attacker, *req.Unit_id, *req.Target_id)
-	}
+	make_attack(*req.Unit_id, *req.Target_id)
 
 	gs := get_game_status(currentGame)
 	json.NewEncoder(w).Encode(gs)
@@ -88,11 +84,7 @@ func handle_defense_request(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, `{"error": "Either target or unit id is null"}`)
 	}
 
-	if currentGame.attacker_turn == true {
-		toggle_defend(*currentGame.defender, *req.Unit_id)
-	} else {
-		toggle_defend(*currentGame.attacker, *req.Unit_id)
-	}
+	toggle_defend(*currentGame.defender, *req.Unit_id)
 
 	gs := get_game_status(currentGame)
 	json.NewEncoder(w).Encode(gs)

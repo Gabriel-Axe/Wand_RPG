@@ -18,7 +18,6 @@ type player struct {
 type game struct {
 	attacker *player 
 	defender *player 
-	attacker_turn bool
 	turn int
 	// NOTE: I still dont know why i need to put these Uppercased
 }

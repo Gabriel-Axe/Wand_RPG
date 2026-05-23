@@ -100,7 +100,9 @@ func see_attacker_stats() []map[string]interface{} {
 
 func next_turn() {
 	currentGame.turn++
-	currentGame.attacker_turn = !currentGame.attacker_turn
+	holder := currentGame.attacker 
+	currentGame.attacker = currentGame.defender
+	currentGame.defender = holder
 }
 
 func toggle_defend(defender player, unit_id int) {
@@ -113,9 +115,12 @@ func toggle_defend(defender player, unit_id int) {
 	next_turn()
 }
 
-func make_attack(attacker player, receiver player, attacker_unit_id int, receiver_unit_id int) {
+func make_attack(attacker_unit_id int, defender_unit_id int) {
+	attacker := currentGame.attacker
+	defender := currentGame.defender
+
 	a_unit := attacker.team[attacker_unit_id]
-	r_unit := receiver.team[receiver_unit_id]
+	r_unit := defender.team[defender_unit_id]
 
 	r_unit.health -= a_unit.damage
 
