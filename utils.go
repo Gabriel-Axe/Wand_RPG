@@ -37,17 +37,17 @@ func setup_game() *game {
 
 	var team_1 [3] *unit
 	team_1[0] = make_goblin()
-	team_1[1] = make_elven()
-	team_1[2] = make_werewolf()
+	team_1[1] = make_goblin()
+	team_1[2] = make_goblin()
 
 	team_1[0].id = 1
 	team_1[1].id = 2
 	team_1[2].id = 3
 
 	var team_2 [3] *unit
-	team_2[0] = make_goblin()
+	team_2[0] = make_elven()
 	team_2[1] = make_elven()
-	team_2[2] = make_werewolf()
+	team_2[2] = make_elven()
 
 	team_2[0].id = 1
 	team_2[1].id = 2
@@ -76,7 +76,7 @@ func get_game_status(g *game) map[string]interface{} {
 	}
 
 	return map[string]interface{}{
-		"players": players,
+		"defender": players,
 		"turn": g.turn,
 	}
 }
