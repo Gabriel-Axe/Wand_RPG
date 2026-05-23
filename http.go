@@ -31,11 +31,22 @@ func handle_game_start(w http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(w).Encode(gs)
 }
 
-func handle_attack_request(w http.ResponseWriter, req *http.Request) {
+func handle_attack_request(w http.ResponseWriter, r *http.Request) {
+	var req AttackRequest
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		fmt.Fprint(w, `{"error": "invalid JSON"}`)
+		return
+	}
+
+	if req.Target_id == nil || req.Unit_id == nil {
+		fmt.Fprintf(w, `{"error": "Either target or unit id is null"}`)
+	}
+
 	if currentGame.attacker_turn == true {
-		make_attack(*currentGame.attacker, *currentGame.defender, 0, 0)
+		make_attack(*currentGame.attacker, *currentGame.defender, *req.Unit_id, *req.Target_id)
 	} else {
-		make_attack(*currentGame.defender, *currentGame.attacker, 0, 0)
+		make_attack(*currentGame.defender, *currentGame.attacker, *req.Unit_id, *req.Target_id)
 	}
 
 	gs := get_game_status(currentGame)
@@ -52,12 +63,39 @@ func handle_attacker_status_request(w http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(w).Encode(stats)
 }
 
-func handle_defense_request(w http.ResponseWriter, req *http.Request) {
-	if currentGame.attacker_turn == true {
-		make_defend(*currentGame.defender, 0)
-	} else {
-		make_defend(*currentGame.attacker, 0)
+func handle_defense_request(w http.ResponseWriter, r *http.Request) {
+	var req DefenseRequest
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		fmt.Fprint(w, `{"error": "invalid JSON"}`)
+		return
 	}
+
+	if currentGame == nil {
+		fmt.Fprint(w, `{"error": "no game started"}`)
+		return
+	}
+	if currentGame.defender == nil {
+		fmt.Fprint(w, `{"error": "defender is nil"}`)
+		return
+	}
+	if currentGame.attacker == nil {
+		fmt.Fprint(w, `{"error": "attacker is nil"}`)
+		return
+	}
+
+	if req.Unit_id == nil {
+		fmt.Fprintf(w, `{"error": "Either target or unit id is null"}`)
+	}
+
+	if currentGame.attacker_turn == true {
+		toggle_defend(*currentGame.defender, *req.Unit_id)
+	} else {
+		toggle_defend(*currentGame.attacker, *req.Unit_id)
+	}
+
+	gs := get_game_status(currentGame)
+	json.NewEncoder(w).Encode(gs)
 }
 
 func handle_pass_turn(w http.ResponseWriter, req *http.Request) {
