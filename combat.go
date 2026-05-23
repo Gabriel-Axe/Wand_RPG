@@ -30,9 +30,9 @@ import (
 func choose_team(player *player) {
 
 	teamMaxSize := 3
-	team := make([]*unit, 0, teamMaxSize)
+	team := make([]*Unit, 0, teamMaxSize)
 
-	fmt.Printf("Select your team %s: \n", player.name)
+	fmt.Printf("Select your team %s: \n", player.Name)
 
 	fmt.Println("Goblin: 1")
 	fmt.Println("Elven: 2")
@@ -42,7 +42,7 @@ func choose_team(player *player) {
 		fmt.Printf("Choose unit %d/%d: ", len(team)+1, teamMaxSize)
 		choice := get_input()
 
-		var newUnit *unit
+		var newUnit *Unit
 		switch choice {
 		case "1":
 			newUnit = make_goblin()
@@ -61,20 +61,20 @@ func choose_team(player *player) {
 		fmt.Printf("Added! Team now has %d/%d units\n", len(team), teamMaxSize)
 	}
 
-	player.team = team
+	player.Team = team
 }
 
 func see_defender_stats() []map[string]interface{} {
-	defender_team := currentGame.defender.team
+	defender_team := currentGame.Defender.Team
 	stats := make([]map[string]interface{}, len(defender_team))
 
 	for i, u := range defender_team {
 		stats[i] = map[string]interface{}{
-			"id": u.id,
-			"name": u.name,
-			"damage": u.damage,
-			"health": u.health,
-			"is_defending": u.is_defending,
+			"id": u.ID,
+			"name": u.Name,
+			"damage": u.Damage,
+			"health": u.Health,
+			"is_defending": u.IsDefending,
 		}
 	}
 
@@ -82,16 +82,16 @@ func see_defender_stats() []map[string]interface{} {
 }
 
 func see_attacker_stats() []map[string]interface{} {
-	attacker_team := currentGame.attacker.team
+	attacker_team := currentGame.Attacker.Team
 	stats := make([]map[string]interface{}, len(attacker_team))
 
 	for i, u := range attacker_team {
 		stats[i] = map[string]interface{}{
-			"id": u.id,
-			"name": u.name,
-			"damage": u.damage,
-			"health": u.health,
-			"is_defending": u.is_defending,
+			"id": u.ID,
+			"name": u.Name,
+			"damage": u.Damage,
+			"health": u.Health,
+			"is_defending": u.IsDefending,
 		}
 	}
 
@@ -99,38 +99,38 @@ func see_attacker_stats() []map[string]interface{} {
 }
 
 func next_turn() {
-	currentGame.turn++
-	holder := currentGame.attacker 
-	currentGame.attacker = currentGame.defender
-	currentGame.defender = holder
+	currentGame.Turn++
+	holder := currentGame.Attacker 
+	currentGame.Attacker = currentGame.Defender
+	currentGame.Defender = holder
 }
 
 func toggle_defend(defender player, unit_id int) {
-	unit := defender.team[unit_id]
-	if unit.is_defending {
-		unit.is_defending = false
+	unit := defender.Team[unit_id]
+	if unit.IsDefending {
+		unit.IsDefending = false
 	} else {
-		unit.is_defending = true
+		unit.IsDefending = true
 	}
 	next_turn()
 }
 
 func make_attack(attacker_unit_id int, defender_unit_id int) {
-	attacker := currentGame.attacker
-	defender := currentGame.defender
+	attacker := currentGame.Attacker
+	defender := currentGame.Defender
 
-	a_unit := attacker.team[attacker_unit_id]
-	r_unit := defender.team[defender_unit_id]
+	a_unit := attacker.Team[attacker_unit_id]
+	r_unit := defender.Team[defender_unit_id]
 
-	r_unit.health -= a_unit.damage
+	r_unit.Health -= a_unit.Damage
 
 	next_turn()
 }
 
-func select_unit_from_team(t []*unit) *unit {
+func select_unit_from_team(t []*Unit) *Unit {
 
 	for _, unit := range(t) {
-		fmt.Printf("%d. %s: %d\n", unit.id, unit.name, unit.health)
+		fmt.Printf("%d. %s: %d\n", unit.ID, unit.Name, unit.Health)
 	}
 	fmt.Println()
 
@@ -165,7 +165,7 @@ func select_unit_from_team(t []*unit) *unit {
 // 	fmt.Println("# ------------------- #")
 // }
 
-func list_player_team(current_player *player, g game) {
+func list_player_team(current_player *player, g Game) {
 	fmt.Println("# ------------------- #")
 	get_player_team(current_player)		
 	fmt.Println("# ------------------- #")

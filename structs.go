@@ -1,24 +1,23 @@
 package main
 
-type unit struct {
-	id int
-	name string
-	health int
-	damage int
-	is_defending bool
+type Unit struct {
+    ID          int    `json:"id"`
+    Name        string `json:"name"`
+    Damage      int    `json:"damage"`
+    Health      int    `json:"health"`
+    IsDefending bool   `json:"is_defending"`
 }
 
 type player struct {
-	id int
-	name string
-	is_attacker bool
-	team []*unit
+    ID   int     `json:"id"`
+    Name string  `json:"name"`
+    Team []*Unit `json:"team"`
 }
 
-type game struct {
-	attacker *player 
-	defender *player 
-	turn int
+type Game struct {
+	Attacker *player 
+	Defender *player 
+	Turn int
 	// NOTE: I still dont know why i need to put these Uppercased
 }
 
@@ -29,4 +28,10 @@ type AttackRequest struct {
 
 type DefenseRequest struct {
 	Unit_id *int  `json:"unit_id"`  
+}
+
+type PlayerResponse struct {
+	id int
+	name string
+	team []*Unit
 }

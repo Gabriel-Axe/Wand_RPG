@@ -10,10 +10,10 @@ import (
 	"bufio"
 )
 
-func list_unit_stats(u unit) {
-	fmt.Println("\tname:",  u.name)
-	fmt.Println("\thealth:", u.health)
-	fmt.Println("\tdamage:", u.damage)
+func list_unit_stats(u Unit) {
+	fmt.Println("\tname:",  u.Name)
+	fmt.Println("\thealth:", u.Health)
+	fmt.Println("\tdamage:", u.Damage)
 }
 
 func is_pressing_key(expected string, player_input string) bool {
@@ -29,39 +29,39 @@ func action_menu_show() {
 	fmt.Println("Atacar o time inimigo: a")
 }
 
-func setup_game() *game {
+func setup_game() *Game {
 	// p1 := &player{id: 1, name: "Alexander"}
 	// p2 := &player{id: 2, name: "Oliver"}
 
 	// WARN: Making the mother of all temporary solutions Jack, cant fret over every egg
 
-	var team_1 [3] *unit
+	var team_1 [3] *Unit
 	team_1[0] = make_goblin()
 	team_1[1] = make_goblin()
 	team_1[2] = make_goblin()
 
-	team_1[0].id = 1
-	team_1[1].id = 2
-	team_1[2].id = 3
+	team_1[0].ID = 1
+	team_1[1].ID = 2
+	team_1[2].ID = 3
 
-	var team_2 [3] *unit
+	var team_2 [3] *Unit
 	team_2[0] = make_elven()
 	team_2[1] = make_elven()
 	team_2[2] = make_elven()
 
-	team_2[0].id = 1
-	team_2[1].id = 2
-	team_2[2].id = 3
+	team_2[0].ID = 1
+	team_2[1].ID = 2
+	team_2[2].ID = 3
 
-	p1 := &player{id: 1, name: "Alexander", team: team_1[:], is_attacker: true}
-	p2 := &player{id: 2, name: "Oliver", team: team_2[:], is_attacker: false}
+	p1 := &player{ID: 1, Name: "Alexander", Team: team_1[:]}
+	p2 := &player{ID: 2, Name: "Oliver", Team: team_2[:]}
 
-	g := game{attacker: p1, defender: p2, turn: 1}
+	g := Game{Attacker: p1, Defender: p2, Turn: 1}
 
 	return &g
 }
 
-func get_game_status(g *game) map[string]interface{} {
+func get_game_status(g *Game) map[string]interface{} {
 	if g == nil {
 		return map[string]interface{}{"error": "No game started"}
 	}
@@ -69,15 +69,15 @@ func get_game_status(g *game) map[string]interface{} {
 	// players := make([]map[string]interface{}, len(g.players))
 	players := make([]map[string]interface{}, 2)
 	players[0] = map[string]interface{}{
-		"id": g.attacker.id,
+		"id": g.Attacker.ID,
 	}
 	players[1] = map[string]interface{}{
-		"id": g.defender.id,
+		"id": g.Defender.ID,
 	}
 
 	return map[string]interface{}{
 		"defender": players,
-		"turn": g.turn,
+		"turn": g.Turn,
 	}
 }
 
@@ -88,20 +88,20 @@ func get_input() string {
 }
 
 func get_player_team(p *player) {
-	fmt.Println("Time do jogador", p.id, ":")
-	for _, unit := range (p.team) {
+	fmt.Println("Time do jogador", p.ID, ":")
+	for _, unit := range (p.Team) {
 		list_unit_stats(*unit)
 	}
 }
 
-func make_goblin() *unit {
-	return &unit{name: "Goblin", health: 70, damage: 10}
+func make_goblin() *Unit {
+	return &Unit{Name: "Goblin", Health: 70, Damage: 10}
 }
 
-func make_werewolf() *unit {
-	return &unit{name: "Werewolf", health: 130, damage: 30}
+func make_werewolf() *Unit {
+	return &Unit{Name: "Werewolf", Health: 130, Damage: 30}
 }
 
-func make_elven() *unit {
-	return &unit{name: "Elven", health: 100, damage: 20}
+func make_elven() *Unit {
+	return &Unit{Name: "Elven", Health: 100, Damage: 20}
 }

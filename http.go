@@ -6,13 +6,13 @@ import (
 	"net/http"
 )
 
-var currentGame *game
+var currentGame *Game
 
 func handle_get_game_status(w http.ResponseWriter, req *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	gs := get_game_status(currentGame)
-
-	json.NewEncoder(w).Encode(gs)
+	json.NewEncoder(w).Encode(currentGame)
+	// gs := get_game_status(currentGame)
+	// json.NewEncoder(w).Encode(gs)
 }
 
 func pong(w http.ResponseWriter, req *http.Request) {
@@ -71,11 +71,11 @@ func handle_defense_request(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, `{"error": "no game started"}`)
 		return
 	}
-	if currentGame.defender == nil {
+	if currentGame.Defender == nil {
 		fmt.Fprint(w, `{"error": "defender is nil"}`)
 		return
 	}
-	if currentGame.attacker == nil {
+	if currentGame.Attacker == nil {
 		fmt.Fprint(w, `{"error": "attacker is nil"}`)
 		return
 	}
@@ -84,7 +84,7 @@ func handle_defense_request(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, `{"error": "Either target or unit id is null"}`)
 	}
 
-	toggle_defend(*currentGame.defender, *req.Unit_id)
+	toggle_defend(*currentGame.Defender, *req.Unit_id)
 
 	gs := get_game_status(currentGame)
 	json.NewEncoder(w).Encode(gs)
