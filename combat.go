@@ -103,15 +103,23 @@ func next_turn() {
 	currentGame.attacker_turn = !currentGame.attacker_turn
 }
 
-func make_defend(defender player, unit_id int) {
+func toggle_defend(defender player, unit_id int) {
 	unit := defender.team[unit_id]
-	unit.is_defending = !unit.is_defending
+	if unit.is_defending {
+		unit.is_defending = false
+	} else {
+		unit.is_defending = true
+	}
+	next_turn()
 }
+
 func make_attack(attacker player, receiver player, attacker_unit_id int, receiver_unit_id int) {
 	a_unit := attacker.team[attacker_unit_id]
 	r_unit := receiver.team[receiver_unit_id]
 
 	r_unit.health -= a_unit.damage
+
+	next_turn()
 }
 
 func select_unit_from_team(t []*unit) *unit {
