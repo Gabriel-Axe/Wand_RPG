@@ -120,9 +120,17 @@ func make_attack(attacker_unit_id int, defender_unit_id int) {
 	defender := currentGame.Defender
 
 	a_unit := attacker.Team[attacker_unit_id]
-	r_unit := defender.Team[defender_unit_id]
+	d_unit := defender.Team[defender_unit_id]
 
-	r_unit.Health -= a_unit.Damage
+	is_defending := d_unit.IsDefending
+
+	if is_defending {
+		damage := (a_unit.Damage * 85) / 100
+		fmt.Printf("Dealing %d damage on IsDefending unit", damage)
+		d_unit.Health -= damage
+	} else {
+		d_unit.Health -= a_unit.Damage
+	}
 
 	next_turn()
 }
