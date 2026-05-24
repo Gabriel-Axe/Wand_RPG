@@ -39,26 +39,26 @@ func see_attacker_stats() []map[string]interface{} {
 	return stats
 }
 
-func next_turn() {
-	currentGame.Turn++
-	holder := currentGame.Attacker 
-	currentGame.Attacker = currentGame.Defender
-	currentGame.Defender = holder
+func next_turn(g *Game) {
+	g.Turn++
+	holder := g.Attacker 
+	g.Attacker = g.Defender
+	g.Defender = holder
 }
 
-func toggle_defend(defender player, unit_id int) {
+func toggle_defend(g *Game, defender player, unit_id int) {
 	unit := defender.Team[unit_id]
 	if unit.IsDefending {
 		unit.IsDefending = false
 	} else {
 		unit.IsDefending = true
 	}
-	next_turn()
+	next_turn(g)
 }
 
-func make_attack(attacker_unit_id int, defender_unit_id int, attack_type int) error {
-	attacker := currentGame.Attacker
-	defender := currentGame.Defender
+func make_attack(g *Game, attacker_unit_id int, defender_unit_id int, attack_type int) error {
+	attacker := g.Attacker
+	defender := g.Defender
 
 	a_unit := attacker.Team[attacker_unit_id]
 	d_unit := defender.Team[defender_unit_id]
@@ -85,6 +85,6 @@ func make_attack(attacker_unit_id int, defender_unit_id int, attack_type int) er
 	// fmt.Printf("Dealing %d damage on IsDefending unit", final_damage)
 	d_unit.Health -= final_damage
 
-	next_turn()
+	next_turn(g)
 	return nil
 }
