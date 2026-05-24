@@ -1,12 +1,9 @@
 package main
 
 import (
-	// "encoding/json"
 	"fmt"
 	"os"
 	"strings"
-
-	// "strconv"
 	"bufio"
 )
 
@@ -28,12 +25,7 @@ func action_menu_show() {
 	fmt.Println("Atacar o time inimigo: a")
 }
 
-func setup_game() *Game {
-	// p1 := &player{id: 1, name: "Alexander"}
-	// p2 := &player{id: 2, name: "Oliver"}
-
-	// WARN: Making the mother of all temporary solutions Jack, cant fret over every egg
-
+func quick_game_setup() *Game {
 	var team_1 [3] *Unit
 	team_1[0] = make_goblin()
 	team_1[1] = make_goblin()
@@ -65,7 +57,6 @@ func get_game_status(g *Game) map[string]interface{} {
 		return map[string]interface{}{"error": "No game started"}
 	}
 
-	// players := make([]map[string]interface{}, len(g.players))
 	players := make([]map[string]interface{}, 2)
 	players[0] = map[string]interface{}{
 		"id": g.Attacker.ID,

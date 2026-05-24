@@ -11,8 +11,6 @@ var currentGame *Game
 func handle_get_game_status(w http.ResponseWriter, req *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(currentGame)
-	// gs := get_game_status(currentGame)
-	// json.NewEncoder(w).Encode(gs)
 }
 
 func pong(w http.ResponseWriter, req *http.Request) {
@@ -26,7 +24,7 @@ func handle_game_start(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	currentGame = setup_game()
+	currentGame = quick_game_setup()
 	json.NewEncoder(w).Encode(currentGame)
 }
 

@@ -7,13 +7,9 @@ import (
 
 func main() {
 
-	// g := setup_game()
-	// game_loop(g)
-	// get_input()
-
 	http.HandleFunc("/ping", pong)
 	// http.HandleFunc("/game/start", handle_game_start)
-	currentGame = setup_game() // WARN: Temporary, im just to lazy to keep doing this every test
+	currentGame = quick_game_setup()
 
 	http.HandleFunc("/game/status", handle_get_game_status)
 	http.HandleFunc("/game/turn/pass", handle_pass_turn)

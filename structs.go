@@ -6,7 +6,6 @@ type Unit struct {
     Health      int    `json:"health"`
     IsDefending bool   `json:"is_defending"`
 		Attacks []Attack `josn:"attacks"`
-		// NOTE: To point or not to point?
 }
 
 type player struct {
@@ -19,7 +18,6 @@ type Game struct {
 	Attacker *player 
 	Defender *player 
 	Turn int
-	// NOTE: I still dont know why i need to put these Uppercased
 }
 
 type AttackRequest struct {
