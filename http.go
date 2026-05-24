@@ -48,7 +48,10 @@ func handle_attack_request(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	make_attack(*req.Unit_id, *req.Target_id, *req.Attack_id)
+	err := make_attack(*req.Unit_id, *req.Target_id, *req.Attack_id)
+	if err != nil {
+		fmt.Fprintf(w, `{"error": "%s"}\n`, err.Error())
+	}
 
 	json.NewEncoder(w).Encode(currentGame)
 }

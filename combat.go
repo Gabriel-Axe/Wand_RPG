@@ -130,7 +130,7 @@ func make_attack(attacker_unit_id int, defender_unit_id int, attack_type int) er
 	if attack_type < len(a_unit.Attacks) {
 		atack = a_unit.Attacks[attack_type]
 	} else {
-		return fmt.Errorf("The attack_type with id %d is higher then the number of attacks")
+		return fmt.Errorf("The attack_type with id %d is higher then the number of attacks (%d)", attack_type, len(a_unit.Attacks))
 	}
 
 	final_damage := atack.Damage
@@ -143,7 +143,6 @@ func make_attack(attacker_unit_id int, defender_unit_id int, attack_type int) er
 	}
 
 	// WARN: Remove this, substitute for a proper logger
-	fmt.Printf("Dealing %d damage on IsDefending unit", final_damage)
 	d_unit.Health -= final_damage
 
 	next_turn()
