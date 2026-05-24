@@ -1,10 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 	"strings"
-	"bufio"
 )
 
 func list_unit_stats(u Unit) {
@@ -26,19 +26,14 @@ func action_menu_show() {
 }
 
 func quick_game_setup() *Game {
-	var team_1 [3] *Unit
-	team_1[0] = make_goblin()
-	team_1[1] = make_goblin()
-	team_1[2] = make_goblin()
+
+	team_1 := make_goblin_team()
 
 	team_1[0].ID = 1
 	team_1[1].ID = 2
 	team_1[2].ID = 3
 
-	var team_2 [3] *Unit
-	team_2[0] = make_elven()
-	team_2[1] = make_elven()
-	team_2[2] = make_elven()
+	team_2 := make_elven_team()
 
 	team_2[0].ID = 1
 	team_2[1].ID = 2
@@ -50,6 +45,31 @@ func quick_game_setup() *Game {
 	g := Game{Attacker: p1, Defender: p2, Turn: 1}
 
 	return &g
+}
+
+func make_goblin_team() [3]*Unit {
+	var team [3] *Unit
+	team[0] = make_goblin()
+	team[1] = make_goblin()
+	team[2] = make_goblin()
+
+	return team
+}
+func make_elven_team() [3]*Unit {
+	var team [3] *Unit
+	team[0] = make_goblin()
+	team[1] = make_goblin()
+	team[2] = make_goblin()
+
+	return team
+}
+func make_werewolf_team() [3]*Unit {
+	var team [3] *Unit
+	team[0] = make_werewolf()
+	team[1] = make_werewolf()
+	team[2] = make_werewolf()
+
+	return team
 }
 
 func get_game_status(g *Game) map[string]interface{} {
