@@ -75,7 +75,6 @@ func see_defender_stats() []map[string]interface{} {
 		stats[i] = map[string]interface{}{
 			"id": u.ID,
 			"name": u.Name,
-			"damage": u.Damage,
 			"health": u.Health,
 			"is_defending": u.IsDefending,
 		}
@@ -92,7 +91,6 @@ func see_attacker_stats() []map[string]interface{} {
 		stats[i] = map[string]interface{}{
 			"id": u.ID,
 			"name": u.Name,
-			"damage": u.Damage,
 			"health": u.Health,
 			"is_defending": u.IsDefending,
 		}
@@ -118,7 +116,7 @@ func toggle_defend(defender player, unit_id int) {
 	next_turn()
 }
 
-func make_attack(attacker_unit_id int, defender_unit_id int) {
+func make_attack(attacker_unit_id int, defender_unit_id int, attack_type int) error {
 	attacker := currentGame.Attacker
 	defender := currentGame.Defender
 
@@ -128,7 +126,14 @@ func make_attack(attacker_unit_id int, defender_unit_id int) {
 	d_is_defending := d_unit.IsDefending
 	a_is_defending := a_unit.IsDefending
 
-	final_damage := a_unit.Damage
+	var atack Attack
+	if attack_type < len(a_unit.Attacks) {
+		atack = a_unit.Attacks[attack_type]
+	} else {
+		return fmt.Errorf("The attack_type with id %d is higher then the number of attacks")
+	}
+
+	final_damage := atack.Damage
 
 	if a_is_defending == true {
 		final_damage = (final_damage * ATTACKER_DEFENDING_DAMAGE_MULTIPLIER) / 100
@@ -142,6 +147,7 @@ func make_attack(attacker_unit_id int, defender_unit_id int) {
 	d_unit.Health -= final_damage
 
 	next_turn()
+	return nil
 }
 
 func select_unit_from_team(t []*Unit) *Unit {
@@ -187,14 +193,3 @@ func list_player_team(current_player *player, g Game) {
 	get_player_team(current_player)		
 	fmt.Println("# ------------------- #")
 }
-
-// func get_opposite_player(current_player *player, g game) *player {
-// 	var p2 *player
-// 	if current_player.id == 1 {
-// 		p2 = g.players[1]
-// 	} else {
-// 		p2 = g.players[0]
-// 	}
-//
-// 	return p2
-// }

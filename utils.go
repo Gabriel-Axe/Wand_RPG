@@ -13,7 +13,6 @@ import (
 func list_unit_stats(u Unit) {
 	fmt.Println("\tname:",  u.Name)
 	fmt.Println("\thealth:", u.Health)
-	fmt.Println("\tdamage:", u.Damage)
 }
 
 func is_pressing_key(expected string, player_input string) bool {
@@ -95,13 +94,33 @@ func get_player_team(p *player) {
 }
 
 func make_goblin() *Unit {
-	return &Unit{Name: "Goblin", Health: 70, Damage: 10}
+	return &Unit{
+		Name: "Goblin",
+		Health: 70,
+		Attacks: []Attack{
+			AttackHeadbutt,
+		},
+	}
 }
 
 func make_werewolf() *Unit {
-	return &Unit{Name: "Werewolf", Health: 130, Damage: 30}
+	return &Unit{
+		Name: "Werewolf",
+		Health: 130,
+		Attacks: []Attack{
+			AttackSlash,
+			AttackHeadbutt,
+		},
+	}
 }
 
 func make_elven() *Unit {
-	return &Unit{Name: "Elven", Health: 100, Damage: 20}
+	return &Unit{
+		Name: "Elven",
+		Health: 100,
+		Attacks: []Attack{
+			AttackSlash,
+			AttackRoundkick,
+		},
+	}
 }

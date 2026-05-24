@@ -3,9 +3,10 @@ package main
 type Unit struct {
     ID          int    `json:"id"`
     Name        string `json:"name"`
-    Damage      int    `json:"damage"`
     Health      int    `json:"health"`
     IsDefending bool   `json:"is_defending"`
+		Attacks []Attack `josn:"attacks"`
+		// NOTE: To point or not to point?
 }
 
 type player struct {
@@ -24,6 +25,7 @@ type Game struct {
 type AttackRequest struct {
 	Unit_id *int  `json:"unit_id"`  
 	Target_id *int `json:"target_id"`
+	Attack_id *int `json:"attack_id"`
 }
 
 type DefenseRequest struct {
@@ -34,4 +36,9 @@ type PlayerResponse struct {
 	id int
 	name string
 	team []*Unit
+}
+
+type Attack struct {
+	Name string
+	Damage int
 }

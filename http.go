@@ -40,9 +40,15 @@ func handle_attack_request(w http.ResponseWriter, r *http.Request) {
 
 	if req.Target_id == nil || req.Unit_id == nil {
 		fmt.Fprintf(w, `{"error": "Either target or unit id is null"}`)
+		return
 	}
 
-	make_attack(*req.Unit_id, *req.Target_id)
+	if req.Attack_id == nil {
+		fmt.Fprintf(w, `{"error": "Atack ID is null"}`)
+		return
+	}
+
+	make_attack(*req.Unit_id, *req.Target_id, *req.Attack_id)
 
 	json.NewEncoder(w).Encode(currentGame)
 }
