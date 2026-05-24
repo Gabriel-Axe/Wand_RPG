@@ -27,6 +27,9 @@ import (
 // 	}
 // }
 
+const ATTACKER_DEFENDING_DAMAGE_MULTIPLIER int = 70
+const DEFENDER_DEFENDING_DAMAGE_MULTIPLIER int = 85
+
 func choose_team(player *player) {
 
 	teamMaxSize := 3
@@ -122,15 +125,21 @@ func make_attack(attacker_unit_id int, defender_unit_id int) {
 	a_unit := attacker.Team[attacker_unit_id]
 	d_unit := defender.Team[defender_unit_id]
 
-	is_defending := d_unit.IsDefending
+	d_is_defending := d_unit.IsDefending
+	a_is_defending := a_unit.IsDefending
 
-	if is_defending {
-		damage := (a_unit.Damage * 85) / 100
-		fmt.Printf("Dealing %d damage on IsDefending unit", damage)
-		d_unit.Health -= damage
-	} else {
-		d_unit.Health -= a_unit.Damage
+	final_damage := a_unit.Damage
+
+	if a_is_defending == true {
+		final_damage = (final_damage * ATTACKER_DEFENDING_DAMAGE_MULTIPLIER) / 100
 	}
+	if d_is_defending == true {
+		final_damage = (final_damage * DEFENDER_DEFENDING_DAMAGE_MULTIPLIER) / 100
+	}
+
+	// WARN: Remove this, substitute for a proper logger
+	fmt.Printf("Dealing %d damage on IsDefending unit", final_damage)
+	d_unit.Health -= final_damage
 
 	next_turn()
 }
