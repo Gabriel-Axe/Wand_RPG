@@ -40,7 +40,19 @@ func GetAttackerStats() []map[string]interface{} {
 	return stats
 }
 
+func CalculateDamage(target *Unit, ammount int) {
+	target.Health -= ammount
+}
+
 func NextTurn(g *Game) {
+
+	for _, u := range g.Attacker.Team {
+		u.ProcessEffects()
+	}
+	for _, u := range g.Defender.Team {
+		u.ProcessEffects()
+	}
+
 	log.Println("Advancing turn")
 	g.Turn++
 	
