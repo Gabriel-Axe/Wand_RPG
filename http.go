@@ -87,7 +87,7 @@ func handle_defense_request(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, `{"error": "Either target or unit id is null"}`)
 	}
 
-	ToggleDefend(currentGame, *currentGame.Defender, *req.Unit_id)
+	ToggleDefend(currentGame, *req.Unit_id)
 
 	json.NewEncoder(w).Encode(currentGame)
 }

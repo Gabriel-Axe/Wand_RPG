@@ -46,14 +46,13 @@ func NextTurn(g *Game) {
 	g.Defender = holder
 }
 
-func ToggleDefend(g *Game, defender player, unit_id int) {
-	unit := defender.Team[unit_id]
+func ToggleDefend(g *Game, unit_id int) {
+	unit := g.Defender.Team[unit_id]
 	if unit.IsDefending {
 		unit.IsDefending = false
 	} else {
 		unit.IsDefending = true
 	}
-	NextTurn(g)
 }
 
 func MakeAttack(g *Game, attacker_unit_id int, defender_unit_id int, attack_type int) error {
@@ -85,6 +84,5 @@ func MakeAttack(g *Game, attacker_unit_id int, defender_unit_id int, attack_type
 	// fmt.Printf("Dealing %d damage on IsDefending unit", final_damage)
 	d_unit.Health -= final_damage
 
-	NextTurn(g)
 	return nil
 }
