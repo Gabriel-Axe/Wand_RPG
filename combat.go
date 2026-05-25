@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 )
 
 const ATTACKER_DEFENDING_DAMAGE_MULTIPLIER int = 70
@@ -40,7 +41,10 @@ func GetAttackerStats() []map[string]interface{} {
 }
 
 func NextTurn(g *Game) {
+	log.Println("Advancing turn")
 	g.Turn++
+	
+	log.Println("Swapping attacker and defender")
 	holder := g.Attacker 
 	g.Attacker = g.Defender
 	g.Defender = holder
@@ -48,6 +52,8 @@ func NextTurn(g *Game) {
 
 func ToggleDefend(g *Game, unit_id int) {
 	unit := g.Defender.Team[unit_id]
+	log.Printf("Togling defense for %s\n", unit.Name)
+
 	if unit.IsDefending {
 		unit.IsDefending = false
 	} else {
@@ -61,6 +67,7 @@ func MakeAttack(g *Game, attacker_unit_id int, defender_unit_id int, attack_type
 
 	a_unit := attacker.Team[attacker_unit_id]
 	d_unit := defender.Team[defender_unit_id]
+	log.Printf("%s is attacking %s\n", a_unit.Name, d_unit.Name)
 
 	d_is_defending := d_unit.IsDefending
 	a_is_defending := a_unit.IsDefending
@@ -74,6 +81,7 @@ func MakeAttack(g *Game, attacker_unit_id int, defender_unit_id int, attack_type
 
 	final_damage := atack.Damage
 
+	log.Println("Calculating defense deductions")
 	if a_is_defending == true {
 		final_damage = (final_damage * ATTACKER_DEFENDING_DAMAGE_MULTIPLIER) / 100
 	}
@@ -82,6 +90,7 @@ func MakeAttack(g *Game, attacker_unit_id int, defender_unit_id int, attack_type
 	}
 
 	// fmt.Printf("Dealing %d damage on IsDefending unit", final_damage)
+	log.Println("Calculating damage")
 	d_unit.Health -= final_damage
 
 	return nil
