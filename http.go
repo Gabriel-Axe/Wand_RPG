@@ -17,7 +17,7 @@ func pong(w http.ResponseWriter, req *http.Request) {
 	w.Write([]byte("pong"))
 }
 
-func handle_game_start(w http.ResponseWriter, req *http.Request) {
+func HandleGameStart(w http.ResponseWriter, req *http.Request) {
 
 	if currentGame != nil {
 		fmt.Fprintf(w, `{"error": "Game already begun"}`)
@@ -28,7 +28,7 @@ func handle_game_start(w http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(w).Encode(currentGame)
 }
 
-func handle_attack_request(w http.ResponseWriter, r *http.Request) {
+func HandleAttackRequest(w http.ResponseWriter, r *http.Request) {
 	var req AttackRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -54,15 +54,15 @@ func handle_attack_request(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(currentGame)
 }
 
-func handle_defender_status_request(w http.ResponseWriter, req *http.Request) {
+func HandleDefenderStatusRequest(w http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(w).Encode(currentGame.Defender)
 }
 
-func handle_attacker_status_request(w http.ResponseWriter, req *http.Request) {
+func HandleAttackerStatusRequest(w http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(w).Encode(currentGame.Attacker)
 }
 
-func handle_defense_request(w http.ResponseWriter, r *http.Request) {
+func HandleDefenseRequest(w http.ResponseWriter, r *http.Request) {
 	var req DefenseRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -92,7 +92,7 @@ func handle_defense_request(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(currentGame)
 }
 
-func handle_pass_turn(w http.ResponseWriter, req *http.Request) {
+func HandlePassTurn(w http.ResponseWriter, req *http.Request) {
 	NextTurn(currentGame)
 	json.NewEncoder(w).Encode(currentGame)
 }

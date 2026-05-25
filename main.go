@@ -12,11 +12,11 @@ func main() {
 	currentGame = QuickGameSetup()
 
 	http.HandleFunc("/game/status", handle_get_game_status)
-	http.HandleFunc("/game/turn/pass", handle_pass_turn)
-	http.HandleFunc("/game/combat/attack", handle_attack_request)
-	http.HandleFunc("/game/combat/defend", handle_defense_request)
-	http.HandleFunc("/game/status/attack", handle_attacker_status_request)
-	http.HandleFunc("/game/status/defend", handle_defender_status_request)
+	http.HandleFunc("/game/turn/pass", HandlePassTurn)
+	http.HandleFunc("/game/combat/attack", HandleAttackRequest)
+	http.HandleFunc("/game/combat/defend", HandleDefenseRequest)
+	http.HandleFunc("/game/status/attack", HandleAttackerStatusRequest)
+	http.HandleFunc("/game/status/defend", HandleDefenderStatusRequest)
 
 	fmt.Println("Server running on http://localhost:8080")
 	http.ListenAndServe(":8080", nil)
