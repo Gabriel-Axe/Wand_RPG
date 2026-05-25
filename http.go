@@ -95,3 +95,19 @@ func HandlePassTurn(w http.ResponseWriter, req *http.Request) {
 	NextTurn(currentGame)
 	json.NewEncoder(w).Encode(currentGame)
 }
+
+type AttackRequest struct {
+	Unit_id *int  `json:"unit_id"`  
+	Target_id *int `json:"target_id"`
+	Attack_id *int `json:"attack_id"`
+}
+
+type DefenseRequest struct {
+	Unit_id *int  `json:"unit_id"`  
+}
+
+type PlayerResponse struct {
+	id int
+	name string
+	team []*Unit
+}

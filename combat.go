@@ -121,3 +121,26 @@ func (u *Unit) ProcessEffects() {
 
 	u.Effects = remaining
 }
+
+type Unit struct {
+    ID          int    `json:"id"`
+    Name        string `json:"name"`
+    Health      int    `json:"health"`
+    IsDefending bool   `json:"is_defending"`
+		Items []Item
+		Types []UnitType `json: "unit_types"`
+		Attacks []Attack `json:"attacks"`
+		Effects []StatusEffect `json:"effects"`
+}
+
+type Attack struct {
+	Name string
+	Damage int
+	Effect Effect `json:"-"`
+}
+
+type UnitType struct {
+	Name string             `json:"name"`
+	StrongAgainst *UnitType `json:"-"`
+	WeakAgainst *UnitType   `json:"-"`
+}
