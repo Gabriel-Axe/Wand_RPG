@@ -9,7 +9,7 @@ func main() {
 
 	http.HandleFunc("/ping", pong)
 	// http.HandleFunc("/game/start", handle_game_start)
-	currentGame = quick_game_setup()
+	currentGame = QuickGameSetup()
 
 	http.HandleFunc("/game/status", handle_get_game_status)
 	http.HandleFunc("/game/turn/pass", handle_pass_turn)

@@ -24,7 +24,7 @@ func handle_game_start(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	currentGame = quick_game_setup()
+	currentGame = QuickGameSetup()
 	json.NewEncoder(w).Encode(currentGame)
 }
 
@@ -46,7 +46,7 @@ func handle_attack_request(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := make_attack(currentGame, *req.Unit_id, *req.Target_id, *req.Attack_id)
+	err := MakeAttack(currentGame, *req.Unit_id, *req.Target_id, *req.Attack_id)
 	if err != nil {
 		fmt.Fprintf(w, `{"error": "%s"}\n`, err.Error())
 	}
@@ -87,12 +87,12 @@ func handle_defense_request(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, `{"error": "Either target or unit id is null"}`)
 	}
 
-	toggle_defend(currentGame, *currentGame.Defender, *req.Unit_id)
+	ToggleDefend(currentGame, *currentGame.Defender, *req.Unit_id)
 
 	json.NewEncoder(w).Encode(currentGame)
 }
 
 func handle_pass_turn(w http.ResponseWriter, req *http.Request) {
-	next_turn(currentGame)
+	NextTurn(currentGame)
 	json.NewEncoder(w).Encode(currentGame)
 }

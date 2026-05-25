@@ -1,39 +1,14 @@
 package main
 
-import (
-	"bufio"
-	"fmt"
-	"os"
-	"strings"
-)
+func QuickGameSetup() *Game {
 
-func list_unit_stats(u Unit) {
-	fmt.Println("\tname:",  u.Name)
-	fmt.Println("\thealth:", u.Health)
-}
-
-func is_pressing_key(expected string, player_input string) bool {
-	if player_input == expected { return true }
-	return  false
-}
-
-func action_menu_show() {
-	fmt.Println("Ação: ")
-	fmt.Println("Sair: q")
-	fmt.Println("Listar time inimigo: l")
-	fmt.Println("Listar time: m")
-	fmt.Println("Atacar o time inimigo: a")
-}
-
-func quick_game_setup() *Game {
-
-	team_1 := make_goblin_team()
+	team_1 := MakeGoblinTeam()
 
 	team_1[0].ID = 1
 	team_1[1].ID = 2
 	team_1[2].ID = 3
 
-	team_2 := make_elven_team()
+	team_2 := MakeElvinTeam()
 
 	team_2[0].ID = 1
 	team_2[1].ID = 2
@@ -47,32 +22,32 @@ func quick_game_setup() *Game {
 	return &g
 }
 
-func make_goblin_team() [3]*Unit {
+func MakeGoblinTeam() [3]*Unit {
 	var team [3] *Unit
-	team[0] = make_goblin()
-	team[1] = make_goblin()
-	team[2] = make_goblin()
+	team[0] = MakeGoblin()
+	team[1] = MakeGoblin()
+	team[2] = MakeGoblin()
 
 	return team
 }
-func make_elven_team() [3]*Unit {
+func MakeElvinTeam() [3]*Unit {
 	var team [3] *Unit
-	team[0] = make_goblin()
-	team[1] = make_goblin()
-	team[2] = make_goblin()
+	team[0] = MakeGoblin()
+	team[1] = MakeGoblin()
+	team[2] = MakeGoblin()
 
 	return team
 }
-func make_werewolf_team() [3]*Unit {
+func MakeWerewolfTeam() [3]*Unit {
 	var team [3] *Unit
-	team[0] = make_werewolf()
-	team[1] = make_werewolf()
-	team[2] = make_werewolf()
+	team[0] = MakeWerewolf()
+	team[1] = MakeWerewolf()
+	team[2] = MakeWerewolf()
 
 	return team
 }
 
-func get_game_status(g *Game) map[string]interface{} {
+func GetGameStatus(g *Game) map[string]interface{} {
 	if g == nil {
 		return map[string]interface{}{"error": "No game started"}
 	}
@@ -91,20 +66,7 @@ func get_game_status(g *Game) map[string]interface{} {
 	}
 }
 
-func get_input() string {
-	reader := bufio.NewReader(os.Stdin)
-	input, _ := reader.ReadString('\n')
-	return strings.TrimSpace(input)
-}
-
-func get_player_team(p *player) {
-	fmt.Println("Time do jogador", p.ID, ":")
-	for _, unit := range (p.Team) {
-		list_unit_stats(*unit)
-	}
-}
-
-func make_goblin() *Unit {
+func MakeGoblin() *Unit {
 	return &Unit{
 		Name: "Goblin",
 		Health: 70,
@@ -114,7 +76,7 @@ func make_goblin() *Unit {
 	}
 }
 
-func make_werewolf() *Unit {
+func MakeWerewolf() *Unit {
 	return &Unit{
 		Name: "Werewolf",
 		Health: 130,
@@ -125,7 +87,7 @@ func make_werewolf() *Unit {
 	}
 }
 
-func make_elven() *Unit {
+func MakeElven() *Unit {
 	return &Unit{
 		Name: "Elven",
 		Health: 100,

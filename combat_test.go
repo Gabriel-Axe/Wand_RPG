@@ -3,7 +3,7 @@ package main
 import "testing"
 
 func TestMakeAttack(t *testing.T) {
-	g := quick_game_setup()
+	g := QuickGameSetup()
 	a := g.Attacker.Team[0]
 	d := g.Defender.Team[0]
 	
@@ -13,7 +13,7 @@ func TestMakeAttack(t *testing.T) {
 
 	before := d.Health
 	
-	err := make_attack(g, 0, 0, 0)
+	err := MakeAttack(g, 0, 0, 0)
 	if err != nil {
 		t.Fatalf("error: %s", err)
 	}

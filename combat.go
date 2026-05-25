@@ -7,7 +7,7 @@ import (
 const ATTACKER_DEFENDING_DAMAGE_MULTIPLIER int = 70
 const DEFENDER_DEFENDING_DAMAGE_MULTIPLIER int = 85
 
-func see_defender_stats() []map[string]interface{} {
+func GetDefenderStats() []map[string]interface{} {
 	defender_team := currentGame.Defender.Team
 	stats := make([]map[string]interface{}, len(defender_team))
 
@@ -23,7 +23,7 @@ func see_defender_stats() []map[string]interface{} {
 	return stats
 }
 
-func see_attacker_stats() []map[string]interface{} {
+func GetAttackerStats() []map[string]interface{} {
 	attacker_team := currentGame.Attacker.Team
 	stats := make([]map[string]interface{}, len(attacker_team))
 
@@ -39,24 +39,24 @@ func see_attacker_stats() []map[string]interface{} {
 	return stats
 }
 
-func next_turn(g *Game) {
+func NextTurn(g *Game) {
 	g.Turn++
 	holder := g.Attacker 
 	g.Attacker = g.Defender
 	g.Defender = holder
 }
 
-func toggle_defend(g *Game, defender player, unit_id int) {
+func ToggleDefend(g *Game, defender player, unit_id int) {
 	unit := defender.Team[unit_id]
 	if unit.IsDefending {
 		unit.IsDefending = false
 	} else {
 		unit.IsDefending = true
 	}
-	next_turn(g)
+	NextTurn(g)
 }
 
-func make_attack(g *Game, attacker_unit_id int, defender_unit_id int, attack_type int) error {
+func MakeAttack(g *Game, attacker_unit_id int, defender_unit_id int, attack_type int) error {
 	attacker := g.Attacker
 	defender := g.Defender
 
@@ -85,6 +85,6 @@ func make_attack(g *Game, attacker_unit_id int, defender_unit_id int, attack_typ
 	// fmt.Printf("Dealing %d damage on IsDefending unit", final_damage)
 	d_unit.Health -= final_damage
 
-	next_turn(g)
+	NextTurn(g)
 	return nil
 }
