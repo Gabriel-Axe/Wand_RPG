@@ -5,7 +5,8 @@ type Unit struct {
     Name        string `json:"name"`
     Health      int    `json:"health"`
     IsDefending bool   `json:"is_defending"`
-		Attacks []Attack `josn:"attacks"`
+		Attacks []Attack `json:"attacks"`
+		Effects []StatusEffect `json:"effects"`
 }
 
 type player struct {
@@ -39,4 +40,5 @@ type PlayerResponse struct {
 type Attack struct {
 	Name string
 	Damage int
+	Effect Effect `json:"-"`
 }

@@ -85,13 +85,27 @@ func MakeAttack(g *Game, attacker_unit_id int, defender_unit_id int, attack_type
 	if a_is_defending == true {
 		final_damage = (final_damage * ATTACKER_DEFENDING_DAMAGE_MULTIPLIER) / 100
 	}
+
 	if d_is_defending == true {
 		final_damage = (final_damage * DEFENDER_DEFENDING_DAMAGE_MULTIPLIER) / 100
 	}
 
 	// fmt.Printf("Dealing %d damage on IsDefending unit", final_damage)
 	log.Println("Calculating damage")
-	d_unit.Health -= final_damage
+	CalculateDamage(d_unit, final_damage)
 
 	return nil
+}
+
+func (u *Unit) ProcessEffects() {
+	var remaining []StatusEffect
+	for _, e := range u.Effects {
+		u.Health -= e.Damage
+		e.Duration--
+		if e.Duration > 0 {
+			remaining = append(remaining, e)
+		}
+	}
+
+	u.Effects = remaining
 }
