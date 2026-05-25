@@ -127,7 +127,7 @@ type Unit struct {
     Name        string `json:"name"`
     Health      int    `json:"health"`
     IsDefending bool   `json:"is_defending"`
-		Items []Item
+		Items []ItemHolder
 		Types []UnitType `json: "unit_types"`
 		Attacks []Attack `json:"attacks"`
 		Effects []StatusEffect `json:"effects"`

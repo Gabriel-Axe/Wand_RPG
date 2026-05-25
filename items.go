@@ -5,14 +5,22 @@ type Item struct {
 	Type string // wand, potion, weapon, poison...
 }
 
+type ItemHolder interface {
+    GetName() string
+    GetType() string
+}
+
+func (i Item) GetName() string { return i.Name }
+func (i Item) GetType() string { return i.Type }
+
 type Wand struct {
 	Item
-	Spells []Effect
+	Spells []Attack
 	ManaPool int
 	RechargeRate int
 }
 
-func NewWand(name string, spells[]Effect, manaPool int, rechargeRate int) Wand {
+func NewWand(name string, spells[]Attack, manaPool int, rechargeRate int) Wand {
 	return Wand{
 		Item: Item{
 			Name: name,

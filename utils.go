@@ -94,23 +94,23 @@ func MakeElven() *Unit {
 
 	cool_wand := 	NewWand(
 		"Wand of Instant Barbcue",
-		[]Effect{
-			FireEffect{DamagePerTurn: 3, Turns: 3}
-		}, 100, 5)
-	)	
-	}
+		[]Attack{
+			AttackFireball,
+		},
+		100, 5)
 
-	return &Unit{
-		Name: "Elven",
-		Health: 100,
-		Items: []Item{
-		},
-		Types: []UnitType{
-			*Flesh,
-		},
-		Attacks: []Attack{
-			AttackSlash,
-			AttackRoundkick,
-		},
-	}
+		return &Unit{
+			Name: "Elven",
+			Health: 100,
+			Items: []ItemHolder{
+				cool_wand,
+			},
+			Types: []UnitType{
+				*Flesh,
+			},
+			Attacks: []Attack{
+				AttackSlash,
+				AttackRoundkick,
+			},
+		}
 }
