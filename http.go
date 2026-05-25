@@ -82,7 +82,6 @@ func HandleDefenseRequest(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, `{"error": "attacker is nil"}`)
 		return
 	}
-
 	if req.Unit_id == nil {
 		fmt.Fprintf(w, `{"error": "Either target or unit id is null"}`)
 	}

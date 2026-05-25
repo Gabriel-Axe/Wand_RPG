@@ -1,5 +1,18 @@
 package main
 
+var (
+	Fire = &UnitType{Name: "File"}
+	Water = &UnitType{Name: "Water"}
+	Flesh = &UnitType{Name: "Flesh"}
+)
+
+func init() {
+	Fire.WeakAgainst = Water
+	Fire.StrongAgainst = Flesh
+	Flesh.WeakAgainst = Fire
+	Water.StrongAgainst = Fire
+}
+
 type Unit struct {
     ID          int    `json:"id"`
     Name        string `json:"name"`
@@ -41,4 +54,10 @@ type Attack struct {
 	Name string
 	Damage int
 	Effect Effect `json:"-"`
+}
+
+type UnitType struct {
+	Name string             `json:"name"`
+	StrongAgainst *UnitType `json:"-"`
+	WeakAgainst *UnitType   `json:"-"`
 }
