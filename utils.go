@@ -70,6 +70,9 @@ func MakeGoblin() *Unit {
 	return &Unit{
 		Name: "Goblin",
 		Health: 70,
+		Types: []UnitType{
+			*Flesh,
+		},
 		Attacks: []Attack{
 			AttackHeadbutt,
 		},
@@ -88,9 +91,23 @@ func MakeWerewolf() *Unit {
 }
 
 func MakeElven() *Unit {
+
+	cool_wand := 	NewWand(
+		"Wand of Instant Barbcue",
+		[]Effect{
+			FireEffect{DamagePerTurn: 3, Turns: 3}
+		}, 100, 5)
+	)	
+	}
+
 	return &Unit{
 		Name: "Elven",
 		Health: 100,
+		Items: []Item{
+		},
+		Types: []UnitType{
+			*Flesh,
+		},
 		Attacks: []Attack{
 			AttackSlash,
 			AttackRoundkick,
