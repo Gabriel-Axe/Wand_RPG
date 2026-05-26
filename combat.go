@@ -64,7 +64,7 @@ func NextTurn(g *Game) {
 
 func ToggleDefend(g *Game, unit_id int) {
 	unit := g.Defender.Team[unit_id]
-	log.Printf("Togling defense for %s\n", unit.Name)
+	log.Printf("Toggling defense for %s\n", unit.Name)
 
 	if unit.IsDefending {
 		unit.IsDefending = false
@@ -79,10 +79,6 @@ func MakeAttack(g *Game, attacker_unit_id int, defender_unit_id int, attack_type
 
 	a_unit := attacker.Team[attacker_unit_id]
 	d_unit := defender.Team[defender_unit_id]
-	log.Printf("%s is attacking %s\n", a_unit.Name, d_unit.Name)
-
-	d_is_defending := d_unit.IsDefending
-	a_is_defending := a_unit.IsDefending
 
 	var atack Attack
 	if attack_type < len(a_unit.Attacks) {
@@ -91,6 +87,10 @@ func MakeAttack(g *Game, attacker_unit_id int, defender_unit_id int, attack_type
 		return fmt.Errorf("The attack_type with id %d is higher then the number of attacks (%d)", attack_type, len(a_unit.Attacks))
 	}
 
+	d_is_defending := d_unit.IsDefending
+	a_is_defending := a_unit.IsDefending
+
+	log.Printf("%s is attacking %s\n", a_unit.Name, d_unit.Name)
 	final_damage := atack.Damage
 
 	log.Println("Calculating defense deductions")
@@ -102,10 +102,16 @@ func MakeAttack(g *Game, attacker_unit_id int, defender_unit_id int, attack_type
 		final_damage = (final_damage * DEFENDER_DEFENDING_DAMAGE_MULTIPLIER) / 100
 	}
 
-	// fmt.Printf("Dealing %d damage on IsDefending unit", final_damage)
 	log.Println("Calculating damage")
 	CalculateDamage(d_unit, final_damage)
 
+	if atack.Effect != nil {
+		err := atack.Effect.Apply(d_unit, a_unit, &atack)
+		if err != nil {
+			return err
+		}
+	}
+		
 	return nil
 }
 
@@ -126,6 +132,7 @@ type Unit struct {
     ID          int    `json:"id"`
     Name        string `json:"name"`
     Health      int    `json:"health"`
+		ManaPool int
     IsDefending bool   `json:"is_defending"`
 		Items []ItemHolder
 		Types []UnitType `json: "unit_types"`
@@ -136,6 +143,7 @@ type Unit struct {
 type Attack struct {
 	Name string
 	Damage int
+	ManaUsage int
 	Effect Effect `json:"-"`
 }
 

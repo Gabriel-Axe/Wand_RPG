@@ -22,6 +22,28 @@ func QuickGameSetup() *Game {
 	return &g
 }
 
+func ManaTestSetup() *Game {
+
+	team_1 := MakeElvinTeam()
+
+	team_1[0].ID = 1
+	team_1[1].ID = 2
+	team_1[2].ID = 3
+
+	team_2 := MakeElvinTeam()
+
+	team_2[0].ID = 1
+	team_2[1].ID = 2
+	team_2[2].ID = 3
+
+	p1 := &player{ID: 1, Name: "Alexander", Team: team_1[:]}
+	p2 := &player{ID: 2, Name: "Oliver", Team: team_2[:]}
+
+	g := Game{Attacker: p1, Defender: p2, Turn: 1}
+
+	return &g
+}
+
 func MakeGoblinTeam() [3]*Unit {
 	var team [3] *Unit
 	team[0] = MakeGoblin()
@@ -70,6 +92,7 @@ func MakeGoblin() *Unit {
 	return &Unit{
 		Name: "Goblin",
 		Health: 70,
+		ManaPool: 50,
 		Types: []UnitType{
 			*Flesh,
 		},
@@ -83,6 +106,7 @@ func MakeWerewolf() *Unit {
 	return &Unit{
 		Name: "Werewolf",
 		Health: 130,
+		ManaPool: 15,
 		Attacks: []Attack{
 			AttackSlash,
 			AttackHeadbutt,
@@ -102,6 +126,7 @@ func MakeElven() *Unit {
 		return &Unit{
 			Name: "Elven",
 			Health: 100,
+			ManaPool: 100,
 			Items: []ItemHolder{
 				cool_wand,
 			},
