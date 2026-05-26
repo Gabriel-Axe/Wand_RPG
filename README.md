@@ -39,3 +39,11 @@ git clone git@github.com:Gabriel-Axe/Wand_RPG.git
 cd Wand_RPG
 go run .
 ```
+
+## Testes
+
+Para executar os testes:
+
+```bash
+go test -v
+```
