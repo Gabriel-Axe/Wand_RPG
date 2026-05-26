@@ -8,7 +8,7 @@ func QuickGameSetup() *Game {
 	team_1[1].ID = 2
 	team_1[2].ID = 3
 
-	team_2 := MakeElvinTeam()
+	team_2 := MakeElvenTeam()
 
 	team_2[0].ID = 1
 	team_2[1].ID = 2
@@ -24,13 +24,13 @@ func QuickGameSetup() *Game {
 
 func ManaTestSetup() *Game {
 
-	team_1 := MakeElvinTeam()
+	team_1 := MakeElvenTeam()
 
 	team_1[0].ID = 1
 	team_1[1].ID = 2
 	team_1[2].ID = 3
 
-	team_2 := MakeElvinTeam()
+	team_2 := MakeElvenTeam()
 
 	team_2[0].ID = 1
 	team_2[1].ID = 2
@@ -52,11 +52,13 @@ func MakeGoblinTeam() [3]*Unit {
 
 	return team
 }
-func MakeElvinTeam() [3]*Unit {
+
+// NOTE: I ain believin i was making a Elvis team this whole time, what a great day for short kings
+func MakeElvenTeam() [3]*Unit {
 	var team [3] *Unit
-	team[0] = MakeGoblin()
-	team[1] = MakeGoblin()
-	team[2] = MakeGoblin()
+	team[0] = MakeElven()
+	team[1] = MakeElven()
+	team[2] = MakeElven()
 
 	return team
 }

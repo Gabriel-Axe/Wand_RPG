@@ -28,20 +28,7 @@ func TestApplyEffect(t *testing.T) {
 
 func TestManaUsage(t *testing.T) {
 
-	g := &Game{
-		Attacker: &player{
-			Name: "",
-			Team: []*Unit{
-				MakeElven(),
-			},
-		},
-		Defender: &player{
-			Name: "",
-			Team: []*Unit{
-				MakeGoblin(),
-			},
-		},
-	}
+	g := ManaTestSetup()
 
 	d := g.Defender.Team[0]
 	a := g.Attacker.Team[0]
@@ -62,6 +49,23 @@ func TestManaUsage(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error: %s", err)
 	}
+
+	after := a.ManaPool
+	assertManaChanged(t, before, after)
+}
+
+func TestRecharge(t *testing.T) {
+
+	g := ManaTestSetup()
+
+	a := g.Attacker.Team[0]
+	a.ManaPool = 0
+
+	before := a.ManaPool
+	logGameState(t, g)
+
+	NextTurn(g)
+	NextTurn(g)
 
 	after := a.ManaPool
 	assertManaChanged(t, before, after)
