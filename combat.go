@@ -46,6 +46,7 @@ func CalculateDamage(target *Unit, ammount int) {
 
 func NextTurn(g *Game) {
 
+	log.Println("Processing effects")
 	for _, u := range g.Attacker.Team {
 		u.ProcessEffects()
 	}
@@ -60,6 +61,14 @@ func NextTurn(g *Game) {
 	holder := g.Attacker 
 	g.Attacker = g.Defender
 	g.Defender = holder
+
+	log.Println("Recharging mana")
+	for _, u := range g.Attacker.Team {
+		u.ManaPool += 10
+	}
+	for _, u := range g.Defender.Team {
+		u.ManaPool += 10
+	}
 }
 
 func ToggleDefend(g *Game, unit_id int) {
