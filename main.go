@@ -8,10 +8,8 @@ import (
 func main() {
 
 	http.HandleFunc("/ping", pong)
-	// http.HandleFunc("/game/start", handle_game_start)
-	currentGame = QuickGameSetup()
-
-	http.HandleFunc("/game/status", handle_get_game_status)
+	http.HandleFunc("/game/start", HandleGameStart)
+	http.HandleFunc("/game/status", HandleGetGameStatus)
 	http.HandleFunc("/game/turn/pass", HandlePassTurn)
 	http.HandleFunc("/game/combat/attack", HandleAttackRequest)
 	http.HandleFunc("/game/combat/defend", HandleDefenseRequest)

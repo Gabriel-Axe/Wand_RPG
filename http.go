@@ -8,7 +8,7 @@ import (
 
 var currentGame *Game
 
-func handle_get_game_status(w http.ResponseWriter, req *http.Request) {
+func HandleGetGameStatus(w http.ResponseWriter, req *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(currentGame)
 }
