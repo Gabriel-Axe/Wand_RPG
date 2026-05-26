@@ -23,6 +23,13 @@ var (
 	// NOTE: Magic
 	AttackFireball = Attack {
 		Name: "Fireball",
+		ManaUsage: 15,
+		Damage: 10,
+		Effect: FireEffect{DamagePerTurn: 5, Turns: 3},
+	}
+	AttackFreezingMist = Attack {
+		Name: "Freezing Mist",
+		ManaUsage: 15,
 		Damage: 10,
 		Effect: FireEffect{DamagePerTurn: 5, Turns: 3},
 	}
