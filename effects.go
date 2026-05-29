@@ -4,10 +4,6 @@ import (
 	"fmt"
 )
 
-type Effect interface {
-	Apply(target *Unit, attacker *Unit, attack *Attack) error
-}
-
 
 func (p PoisonEffect) Apply(target *Unit, attacker *Unit, attack *Attack) error {
 
