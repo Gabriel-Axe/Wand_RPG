@@ -61,3 +61,26 @@ func DeductMana(atacker *Unit, attack *Attack) error {
 	atacker.ManaPool -=  attack.ManaUsage
 	return nil
 }
+
+func (f FreezeEffect) ToStatusEffect() StatusEffect {
+	return StatusEffect{
+		Type: "freeze",
+		Slowdown: f.Slowdown,
+		Duration: f.Turns,
+	}
+}
+
+func (p PoisonEffect) ToStatusEffect() StatusEffect {
+	return StatusEffect{
+		Type: "poison",
+		Damage: p.DamagePerTurn,
+		Duration: p.Turns,
+	}
+}
+func (f FireEffect) ToStatusEffect() StatusEffect {
+	return StatusEffect{
+		Type: "fire",
+		Slowdown: f.DamagePerTurn,
+		Duration: f.Turns,
+	}
+}
