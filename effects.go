@@ -8,27 +8,6 @@ type Effect interface {
 	Apply(target *Unit, attacker *Unit, attack *Attack) error
 }
 
-type StatusEffect struct {
-    Type     string `json:"type"`
-    Damage   int    `json:"damage"`
-		Slowdown int
-    Duration int    `json:"duration"`
-}
-
-type PoisonEffect struct {
-	DamagePerTurn int
-	Turns int
-}
-
-type FireEffect struct {
-	DamagePerTurn int
-	Turns int
-}
-
-type FreezeEffect struct {
-	Slowdown int
-	Turns int
-}
 
 func (p PoisonEffect) Apply(target *Unit, attacker *Unit, attack *Attack) error {
 
