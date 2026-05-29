@@ -10,3 +10,7 @@ type ItemHolder interface {
     GetType() string
 		Use(target *Unit) error
 }
+
+type MagicThing interface {
+	DeductMana(attack *Attack) error
+}

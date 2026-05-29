@@ -53,12 +53,21 @@ func (p FireEffect) Apply(target *Unit, attacker *Unit, attack *Attack) error {
 	return nil
 }
 
-func DeductMana(atacker *Unit, attack *Attack) error {
-	if atacker.ManaPool - attack.ManaUsage < 0 {
+func (w *Unit) DeductMana(attack *Attack) error {
+	if w.ManaPool - attack.ManaUsage < 0 {
 		return fmt.Errorf("Insuficient mana from %s to perform %s", atacker.Name, attack.Name)
 	}
 
-	atacker.ManaPool -=  attack.ManaUsage
+	w.ManaPool -=  attack.ManaUsage
+	return nil
+}
+
+func (w *Wand) DeductMana(attack *Attack) error {
+	if w.ManaPool - attack.ManaUsage < 0 {
+		return fmt.Errorf("Insuficient mana from %s to perform %s", atacker.Name, attack.Name)
+	}
+
+	w.ManaPool -=  attack.ManaUsage
 	return nil
 }
 

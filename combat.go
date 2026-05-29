@@ -124,15 +124,15 @@ func MakeAttack(g *Game, attacker_unit_id int, defender_unit_id int, attack_type
 	return nil
 }
 
-func (u *Unit) ProcessEffects() {
+func (w *Unit) ProcessEffects() {
 	var remaining []StatusEffect
-	for _, e := range u.Effects {
-		u.Health -= e.Damage
+	for _, e := range w.Effects {
+		w.Health -= e.Damage
 		e.Duration--
 		if e.Duration > 0 {
 			remaining = append(remaining, e)
 		}
 	}
 
-	u.Effects = remaining
+	w.Effects = remaining
 }
