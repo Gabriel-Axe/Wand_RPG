@@ -52,6 +52,13 @@ func TestManaUsage(t *testing.T) {
 
 	after := a.ManaPool
 	assertManaChanged(t, before, after)
+
+	t.Log("Checking if magic can be used when mana == 0")
+	a.ManaPool = 0
+	_ = AttackFireball.Effect.Apply(d, a, &AttackFireball)
+	if a.ManaPool == 0 {
+		t.Fatalf("error: magic was used with mana == 0")
+	}
 }
 
 func TestRecharge(t *testing.T) {
